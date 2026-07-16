@@ -14,17 +14,17 @@ function getTransporter() {
 
 async function sendOtpEmail(toEmail, firstName, otp) {
   // If email isn't configured, don't crash signup — just log it so local dev keeps working.
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    console.warn(`EMAIL_USER/EMAIL_PASS not set — would have emailed OTP ${otp} to ${toEmail}`);
+ if (!process.env.BREVO_LOGIN || !process.env.BREVO_SMTP_KEY) {
+    console.warn("BREVO credentials missing");
     return { sent: false };
-  }
+}
 
   try {
     const transporter = getTransporter();
      await transporter.verify();
       console.log("SMTP connection successful");
     await transporter.sendMail({
-     from: `"Cupinul" <YOUR_VERIFIED_EMAIL>`,
+     from: '"Cupinul" cupinul0@gmail.com',
       to: toEmail,
       subject: "Your Cupinul verification code",
       html: `
