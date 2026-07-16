@@ -1,6 +1,7 @@
+/*
 const axios = require("axios");
 
-async function sendOtpEmail(toEmail, firstName, otp) {
+  async function sendOtpEmail(toEmail, firstName, otp) {
   console.log("Sending OTP to:", toEmail);
 
   if (!process.env.BREVO_API_KEY) {
@@ -62,3 +63,4 @@ async function sendOtpEmail(toEmail, firstName, otp) {
 }
 
 module.exports = { sendOtpEmail };
+*/

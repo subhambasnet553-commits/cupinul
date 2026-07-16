@@ -248,7 +248,16 @@ function initProfilePanel() {
       window.location.href = "chat.html";
     });
   }
-
+// Floating community button, placed below the chat button
+  if (!document.getElementById("communityFloatBtn")) {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `<button id="communityFloatBtn" class="community-float-btn" title="Community"><i class='bx bxs-group'></i></button>`
+    );
+    document.getElementById("communityFloatBtn").addEventListener("click", () => {
+      window.location.href = "community.html";
+    });
+  }
   document.getElementById("profileBtn")?.addEventListener("click", openProfilePanel);
   document.getElementById("profileCloseBtn").addEventListener("click", closeProfilePanel);
   document.getElementById("profileOverlay").addEventListener("click", closeProfilePanel);

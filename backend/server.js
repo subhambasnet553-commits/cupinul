@@ -20,12 +20,11 @@ const profileRoutes = require("./routes/profileRoutes");
 const quizRoutes = require("./routes/quizRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const galleryRoutes = require("./routes/galleryRoutes");
-
+const communityRoutes = require("./routes/communityRoutes");
 const app = express();
 
 // Connect to MongoDB
 connectDB();
-
 // Middleware
 app.use(cors());
 app.use(express.json({ limit: "10mb" })); // raised so base64 profile pictures and gallery photos don't get rejected
@@ -39,7 +38,7 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/quiz", quizRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/gallery", galleryRoutes);
-
+app.use("/api/community", communityRoutes);
 // Serve the frontend (register.html, structure.html, style.css, script.js, etc.)
 app.use(express.static(path.join(__dirname, "../frontend")));
 

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+    <link rel="apple-touch-icon" href="favicon-180.png">
+    <title>Community</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  </head>
+  <body>
+
+    <button class="profile-btn" id="profileBtn" title="Profile"><i class='bx bxs-user-circle'></i></button>
+
+    <div class="diary_page community-page" id="app">
+      <div id="loadingState">
+        <p class="title">Loading...</p>
+      </div>
+
+      <div id="communitySection" style="display:none;">
+        <a href="home.html" class="back-link"><i class='bx bx-arrow-back'></i> Home</a>
+        <p class="title">Community</p>
+        <p class="subtitle">Share stories and thoughts with everyone on Cupinul</p>
+
+        <div class="write-box">
+          <textarea id="postInput" class="entry-textarea" maxlength="2000" placeholder="Share a story or thought..."></textarea>
+          <button id="postSubmitBtn" class="cacc entry-submit-btn">Post</button>
+          <p id="postMsg" class="write-msg" style="display:none;"></p>
+        </div>
+
+        <div id="postsList" class="entries-list community-posts-list"></div>
+      </div>
+    </div>
+
+    <!-- Comments panel -->
+    <div id="commentsOverlay" class="profile-overlay"></div>
+    <div id="commentsPanel" class="profile-panel comments-panel">
+      <button id="commentsCloseBtn" class="profile-close-btn"><i class='bx bx-x'></i></button>
+      <p class="title" style="font-size:20px;">Comments</p>
+      <div id="commentsList" class="entries-list"></div>
+      <div class="comment-input-row">
+        <input type="text" id="commentInput" class="message-input" placeholder="Write a comment...">
+        <button id="commentSendBtn" class="message-send-btn"><i class='bx bx-send'></i></button>
+      </div>
+    </div>
+
+    <script src="decor.js"></script>
+    <script src="profile.js"></script>
+    <script src="community.js"></script>
+  </body>
+</html>

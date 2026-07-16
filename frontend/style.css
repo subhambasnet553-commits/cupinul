@@ -1258,7 +1258,7 @@ a:hover{
 .chat-float-btn:hover{
   background: rgba(255,255,255,0.7);
 }
-
+.community-float-btn{ position: fixed; top: 132px; right: 20px; z-index: 5; border: none; background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); border-radius: 50%; width: 46px; height: 46px; font-size: 22px; color: #e6437e; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); } .community-float-btn:hover{ background: rgba(255,255,255,0.7); }
 /* ---------- Chat Page ---------- */
 .chat-page{
   display: flex;
@@ -1471,4 +1471,100 @@ a:hover{
   font-size: 28px !important;
   letter-spacing: 10px;
   font-weight: bold;
+}
+.community-float-btn{
+  position: fixed;
+  top: 132px;
+  right: 20px;
+  z-index: 5;
+  border: none;
+  background: rgba(255,255,255,0.5);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  font-size: 22px;
+  color: #e6437e;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.community-float-btn:hover{
+  background: rgba(255,255,255,0.7);
+}
+.post-author-row{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.post-author-avatar, .post-author-avatar-placeholder{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.post-author-avatar.small, .post-author-avatar-placeholder.small{
+  width: 30px;
+  height: 30px;
+}
+.post-author-avatar-placeholder{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: #e6437e;
+}
+.post-author-avatar-placeholder.small{
+  font-size: 30px;
+}
+.post-author-name{
+  margin: 0;
+  font-weight: bold;
+  font-size: 13px;
+  color: #9c1155;
+}
+.post-date{
+  margin: 0;
+  font-size: 11px;
+  color: #9c1155;
+  opacity: 0.7;
+}
+.post-content{
+  margin-bottom: 10px !important;
+}
+.post-actions{
+  display: flex;
+  gap: 15px;
+}
+.post-like-btn, .post-comment-btn{
+  border: none;
+  background: rgba(255,255,255,0.4);
+  color: #9c1155;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.post-like-btn.liked{
+  background: rgba(255,45,149,0.15);
+  color: #e6437e;
+}
+.comments-panel{
+  display: flex;
+  flex-direction: column;
+}
+.comment-input-row{
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+.community-posts-list{
+  max-height: 500px;
 }
