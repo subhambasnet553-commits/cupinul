@@ -2,18 +2,12 @@ const nodemailer = require("nodemailer");
 
 function getTransporter() {
   return nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: "smtp-relay.brevo.com",
     port: 587,
-    secure: false, // true only for port 465
+    secure: false,
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-    connectionTimeout: 30000,
-    greetingTimeout: 30000,
-    socketTimeout: 30000,
-    tls: {
-      rejectUnauthorized: false,
+      user: process.env.BREVO_LOGIN,
+      pass: process.env.BREVO_SMTP_KEY,
     },
   });
 }
@@ -30,7 +24,7 @@ async function sendOtpEmail(toEmail, firstName, otp) {
      await transporter.verify();
       console.log("SMTP connection successful");
     await transporter.sendMail({
-      from: `"Cupinul" <${process.env.EMAIL_USER}>`,
+     from: `"Cupinul" <YOUR_VERIFIED_EMAIL>`,
       to: toEmail,
       subject: "Your Cupinul verification code",
       html: `
