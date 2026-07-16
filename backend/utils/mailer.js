@@ -38,7 +38,8 @@ async function sendOtpEmail(toEmail, firstName, otp) {
   } catch (err) {
     // IMPORTANT: never let an email failure block account creation or login.
     // Log it clearly (visible in Render's logs) and let the caller decide what to do.
-    console.error(`Failed to send OTP email to ${toEmail}: ${err.message}`);
+    
+    console.error("EMAIL ERROR:", err);
     console.error(`Fallback — the OTP for ${toEmail} is: ${otp}`);
     return { sent: false, error: err.message };
   }
