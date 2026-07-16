@@ -55,8 +55,11 @@ if (registerForm) {
       }
 
       // No token yet — account needs email verification first
-      sessionStorage.setItem("pendingVerificationEmail", data.email);
-      window.location.href = "verify-otp.html";
+      // Account created — go directly to profile setup
+localStorage.setItem("token", data.token);
+localStorage.setItem("user", JSON.stringify(data.user));
+
+window.location.href = "onboarding.html";
     } catch (err) {
       showError(errorMsg, "Could not reach the server. Is the backend running?");
       if (submitBtn) setButtonLoading(submitBtn, false, "", "Create Account");
