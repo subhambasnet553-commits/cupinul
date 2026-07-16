@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+    <link rel="apple-touch-icon" href="favicon-180.png">
+    <meta charset="UTF-8" />
+    <title>Our Diary</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  </head>
+  <body>
+
+    <div class="diary_page" id="app">
+
+      <!-- Loading -->
+      <div id="loadingState">
+        <p class="title">Loading...</p>
+      </div>
+
+      <!-- Paired: diary view -->
+      <div id="diarySection" style="display:none;">
+        <a href="home.html" class="back-link"><i class='bx bx-arrow-back'></i> Home</a>
+        <button class="profile-btn" id="profileBtn" title="Profile"><i class='bx bxs-user-circle'></i></button>
+        <p class="title">Our Diary</p>
+        <p class="subtitle" id="pairedWithText"></p>
+
+        <div class="write-box">
+          <textarea id="entryText" class="entry-textarea" placeholder="Write today's entry..." maxlength="5000"></textarea>
+          <button id="submitEntryBtn" class="cacc entry-submit-btn">Save Today's Entry</button>
+          <p id="writeMsg" class="write-msg" style="display:none;"></p>
+        </div>
+
+        <div class="tabs">
+          <button class="tab-btn active" id="tabMine">My Entries</button>
+          <button class="tab-btn" id="tabPartner">Partner's Entries</button>
+        </div>
+
+        <div id="mineList" class="entries-list"></div>
+        <div id="partnerList" class="entries-list" style="display:none;"></div>
+      </div>
+
+    </div>
+
+    <script src="decor.js"></script>
+    <script src="profile.js"></script>
+    <script src="diary.js"></script>
+  </body>
+</html>

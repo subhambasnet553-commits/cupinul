@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+    <link rel="apple-touch-icon" href="favicon-180.png">
+    <meta charset="UTF-8" />
+    <title>Chat</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  </head>
+  <body>
+
+    <button class="profile-btn" id="profileBtn" title="Profile"><i class='bx bxs-user-circle'></i></button>
+
+    <div class="diary_page chat-page" id="app">
+      <div id="loadingState">
+        <p class="title">Loading...</p>
+      </div>
+
+      <div id="chatSection" style="display:none;">
+        <a href="home.html" class="back-link"><i class='bx bx-arrow-back'></i> Home</a>
+        <p class="title">Chat</p>
+        <p class="subtitle"><i class='bx bx-lock-alt'></i> Messages are encrypted</p>
+
+        <div id="messagesList" class="messages-list"></div>
+
+        <form id="messageForm" class="message-form">
+          <input type="text" id="messageInput" class="message-input" placeholder="Type a message..." autocomplete="off">
+          <button type="submit" class="message-send-btn"><i class='bx bx-send'></i></button>
+        </form>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="decor.js"></script>
+    <script src="profile.js"></script>
+    <script src="chat.js"></script>
+  </body>
+</html>
