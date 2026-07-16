@@ -21,6 +21,12 @@ exports.uploadPhoto = async (req, res) => {
       eventName: eventName.trim(),
       date,
     });
+    const Notification = require("../models/Notification");
+    await Notification.create({
+      user: me.partner,
+      type: "gallery",
+      text: `${me.firstName} added a new photo to your gallery`,
+    });
 
     res.status(201).json({ message: "Added to your gallery.", photo: { id: photo._id } });
   } catch (err) {

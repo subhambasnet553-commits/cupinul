@@ -20,6 +20,7 @@ async function init() {
   try {
     loadingState.style.display = "none";
     communitySection.style.display = "block";
+    fetch(`${API_BASE_URL}/api/community/mark-visited`, { method: "POST", headers });
     await loadPosts();
   } catch (err) {
     loadingState.innerHTML = '<p class="title">Could not reach the server.</p>';

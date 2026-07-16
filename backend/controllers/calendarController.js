@@ -27,7 +27,14 @@ exports.createEvent = async (req, res) => {
       status: type === "plan" ? "pending" : "confirmed",
       proposedBy: me._id,
     });
-
+     if (type === "plan") {
+      const Notification = require("../models/Notification");
+      await Notification.create({
+        user: me.partner,
+        type: "plan",
+        text: `${me.firstName} proposed a plan: ${title.trim()}`,
+      });
+    }
     res.status(201).json({ message: "Added to your calendar.", event });
   } catch (err) {
     console.error("createEvent error:", err);

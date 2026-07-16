@@ -37,7 +37,7 @@ async function init() {
       pairedSection.style.display = "block";
       writeBtn.style.display = "inline-flex";
       document.getElementById("pairedWithText").textContent = `You and ${data.partner.firstName} 💕`;
-      pairedAtMs = new Date(data.pairedAt).getTime();
+      pairedAtMs = new Date(data.relationshipStartDate || data.pairedAt).getTime();
       updateTimer();
       timerInterval = setInterval(updateTimer, 1000);
     } else {
@@ -96,7 +96,7 @@ document.getElementById("pairForm")?.addEventListener("submit", async (e) => {
       errEl.style.display = "block";
       return;
     }
-    window.location.reload();
+   window.location.href = "relationship-start.html";
   } catch (err) {
     errEl.textContent = "Could not reach the server.";
     errEl.style.display = "block";

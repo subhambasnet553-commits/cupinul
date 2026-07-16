@@ -32,6 +32,7 @@ body{
   z-index: 1;
   box-sizing: border-box;
 }
+
 .login_page{
   background-color: rgba(255, 255, 255, 0.3);
   padding-top: 50px;
@@ -44,49 +45,63 @@ body{
    box-shadow: 0 8px 32px rgba(219,39,119,0.18);
    max-width: 90vw;
    box-sizing: border-box;
+     width: 500px;
 }
+.input-box{
+    width:100%;
+    max-width:420px;
+    margin:0 auto 14px;
+    position:relative;
+}
+.input-box i{
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+    color: #000000;
+    z-index: 2;
+    line-height: 1;
+}
+.username,
+.password{
+    width: 100%;
+    max-width: 340px;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
 
-.username{
-  border: none;
-  margin-bottom: 20px;
-  margin-top: 0;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 8px;
-  outline:none;
-  width: 100%;
-  max-width: 250px;
-  box-sizing: border-box;
+    padding: 0 20px 0 50px;
+
+    box-sizing: border-box;
+    font-size: 16px;
+}
+.remember{
+    margin-top: 4px;
+    margin-bottom: 18px;
+    font-size: 14px;
 }
 .title{
-  margin-top: 0px;
-  font-size: 30px;
-  font-weight: bold;
-  text-align: center;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
 }
 .noacc{
-  margin-left: 50px;
-  font-size: 12px;
+  text-align:center;
+  font-size:13px;
+  margin-top:18px;
 }
-.password{
-  border: none;
-  padding:10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  border-radius: 8px;
-  outline: none;
-  width: 100%;
-  max-width: 250px;
-  box-sizing: border-box;
-}
+
 .login{
   border: none;
   color: white;
   border-radius: 10px;
   background-color: #e67e9d;
-  padding-top: 14px;
-  padding-bottom: 14px;
+  height: 52px;
+  padding: 0;
   width: 100%;
   box-sizing: border-box;
  cursor: pointer;
@@ -100,82 +115,80 @@ body{
   background-color: #ff5c8a;
 box-shadow: 5px 6px 10px rgba(0,0,0,0.15);
 }
-.firstname{
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  outline: none;
-  margin-bottom: 10px;
-  cursor: pointer;
-  width: 100%;
-  max-width: 250px;
-  box-sizing: border-box;
+#loginForm .username,
+#loginForm .password{
+    padding-left: 45px;
 }
-.lastname{
-    padding: 10px;
-  border: none;
-  border-radius: 10px;
-  outline: none;
-    margin-bottom: 10px;
-  cursor: pointer;
-    width: 100%;
-  max-width: 250px;
-  box-sizing: border-box;
-  
-}
-.email{
-    padding: 10px;
-  border: none;
-  border-radius: 10px;
-  outline: none;
-    margin-bottom: 10px;
-  cursor: pointer;
-    width: 100%;
-  max-width: 250px;
-  box-sizing: border-box;
-}
-.password{
-    padding: 10px;
-  border: none;
-  border-radius: 10px;
-  outline: none;
-    margin-bottom: 10px;
-  cursor: pointer;
-}
+.username,
+.password,
+.firstname,
+.lastname,
+.email,
 .conpassword{
-      padding: 10px;
-  border: none;
-  border-radius: 10px;
-  outline: none;
-    margin-bottom: 10px;
-  cursor: pointer;
-  width: 100%;
-  max-width: 250px;
-  box-sizing: border-box;
+    font-size:13px;
+}
+
+.username::placeholder,
+.password::placeholder,
+.firstname::placeholder,
+.lastname::placeholder,
+.email::placeholder,
+.conpassword::placeholder{
+    font-size:13px;
 }
 .cacc{
-    border: none;
-  color: white;
-  border-radius: 10px;
-  background-color: #e67e9d;
-  padding-top: 14px;
-  padding-bottom: 14px;
-  width: 100%;
-  box-sizing: border-box;
- cursor: pointer;
- transition:box-shadow 0.15;
- outline: pink;
- font-size: 15px;
- margin-top: 30px;
+    width:100%;
+    max-width:320px;
+
+    height:52px;
+
+    display:block;
+    margin:28px auto 0;
+
+    border:none;
+    border-radius:10px;
+
+    background:#e67e9d;
+
+    color:white;
+
+    font-size:16px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.25s;
 }
 .cacc:hover{
-  background-color: #ff5c8a;
-  box-shadow: 5px 6px 10px rgba(0,0,0,0.15);
+    background:#ff5c8a;
+    box-shadow:0 6px 12px rgba(0,0,0,.15);
+}
+.firstname,
+.lastname,
+.email,
+.password,
+.conpassword{
+    width: 100%;
+    max-width: 420px;
+    height: 42px;
+
+    border: none;
+    border-radius: 8px;
+
+    padding: 0 15px;
+
+    box-sizing: border-box;
+
+    display: block;
+    margin: 0 auto 14px auto;   /* <-- This creates space */
+}
+#registerForm div{
+    margin-bottom: 14px;
 }
 .back{
-  margin-top: 20px;
-  margin-left: 40px;
-  font-size: 14px;
+    text-align:center;
+    margin-top:22px;
+    font-size:15px;
 }
 a{
   color:#c2185b;
@@ -1567,4 +1580,16 @@ a:hover{
 }
 .community-posts-list{
   max-height: 500px;
+}
+.profile-btn.has-badge::after,
+.community-float-btn.has-badge::after{
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 12px;
+  height: 12px;
+  background: #ff3b3b;
+  border-radius: 50%;
+  border: 2px solid white;
 }

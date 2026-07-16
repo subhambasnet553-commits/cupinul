@@ -116,16 +116,10 @@ function buildProfilePanelHTML() {
         <button id="deleteAccountBtn" class="danger-btn"><i class='bx bx-trash'></i> Delete My Account</button>
         <p id="dangerMsg" class="write-msg" style="display:none;"></p>
       </div>
-
-      <!-- Inbox -->
+     <!-- Inbox -->
       <div class="profile-tab-content" id="tab-inbox" style="display:none;">
-        <div class="inbox-empty">
-          <i class='bx bx-envelope'></i>
-          <p>Your inbox is empty for now.</p>
-          <p class="inbox-sub">Notifications and messages will show up here soon.</p>
-        </div>
+        <div id="inboxContent"><p class="empty-msg">Loading...</p></div>
       </div>
-    </div>
   `;
 }
 
@@ -227,7 +221,23 @@ async function loadStatsTab() {
     el.innerHTML = '<p class="empty-msg">Could not load stats.</p>';
   }
 }
+async function loadInboxTab() {
+  const el = document.getElementById("inboxContent");
+  try {
+    const res = await fetch(`${PROFILE_API}/api/notifications`, { headers: profileHeaders });
+    const data = await res.json();
 
+    el.innerHTML =
+      data.notifications
+        .map((n) => `<div class="entry-card"><p class="entry-content">${n.text}</p></div>`)
+        .join("") || '<p class="empty-msg">Your inbox is empty for now.</p>';
+
+    await fetch(`${PROFILE_API}/api/notifications/mark-read`, { method: "POST", headers: profileHeaders });
+    document.getElementById("profileBtn")?.classList.remove("has-badge");
+  } catch (err) {
+    el.innerHTML = '<p class="empty-msg">Could not load notifications.</p>';
+  }
+}
 function escapeHtmlP(str) {
   if (!str) return "";
   const div = document.createElement("div");
@@ -272,6 +282,7 @@ function initProfilePanel() {
 
       if (tab.dataset.tab === "summary") loadSummaryTab();
       if (tab.dataset.tab === "stats") loadStatsTab();
+      if (tab.dataset.tab === "inbox") loadInboxTab();
     });
   });
 
@@ -448,5 +459,19 @@ function initProfilePanel() {
     }
   });
 }
-
+checkUnreadBadge();
+  setInterval(checkUnreadBadge, 30000); // poll every 30s
 document.addEventListener("DOMContentLoaded", initProfilePanel);
+async function checkUnreadBadge() {
+  try {
+    const res = await fetch(`${PROFILE_API}/api/notifications`, { headers: profileHeaders });
+    const data = await res.json();
+    document.getElementById("profileBtn")?.classList.toggle("has-badge", data.unreadCount > 0);
+  } catch (err) {}
+
+  try {
+    const res2 = await fetch(`${PROFILE_API}/api/community/unread`, { headers: profileHeaders });
+    const data2 = await res2.json();
+    document.getElementById("communityFloatBtn")?.classList.toggle("has-badge", data2.hasNew);
+  } catch (err) {}
+}

@@ -22,7 +22,7 @@ const chatRoutes = require("./routes/chatRoutes");
 const galleryRoutes = require("./routes/galleryRoutes");
 const communityRoutes = require("./routes/communityRoutes");
 const app = express();
-
+const notificationRoutes = require("./routes/notificationRoutes");
 // Connect to MongoDB
 connectDB();
 // Middleware
@@ -39,6 +39,7 @@ app.use("/api/quiz", quizRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/community", communityRoutes);
+app.use("/api/notifications", notificationRoutes);
 // Serve the frontend (register.html, structure.html, style.css, script.js, etc.)
 app.use(express.static(path.join(__dirname, "../frontend")));
 
@@ -85,7 +86,12 @@ io.on("connection", async (socket) => {
         encryptedContent: encrypted,
         iv,
       });
-
+          const Notification = require("./models/Notification");
+      await Notification.create({
+        user: me.partner,
+        type: "message",
+        text: `New message from your partner`,
+      });
       // Plaintext only ever travels over this authenticated, encrypted-in-transit
       // (HTTPS/WSS) connection — it's never stored in plaintext in the database.
       io.to(socket.roomId).emit("receive_message", {

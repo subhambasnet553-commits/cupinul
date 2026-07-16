@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {
-  createPost, listPosts, toggleLike, deletePost, listComments, addComment, deleteComment,
+  createPost, listPosts, toggleLike, deletePost, listComments, addComment, deleteComment, checkUnread, markVisited,
 } = require("../controllers/communityController");
 const requireAuth = require("../middleware/authMiddleware");
 
@@ -14,3 +14,5 @@ router.post("/posts/:id/comments", requireAuth, addComment);
 router.delete("/comments/:id", requireAuth, deleteComment);
 
 module.exports = router;
+router.get("/unread", requireAuth, checkUnread);
+router.post("/mark-visited", requireAuth, markVisited);

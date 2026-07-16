@@ -40,6 +40,15 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    relationshipStartDate: {
+      type: Date,
+      default: null,
+    },
+    lastCommunityVisit: {
+      type: Date,
+      default: null,
+    },
+    
     bio: {
       type: String,
       default: "",

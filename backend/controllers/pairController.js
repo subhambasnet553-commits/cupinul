@@ -16,12 +16,13 @@ exports.getMyCode = async (req, res) => {
     const user = await User.findById(req.userId);
     if (!user) return res.status(404).json({ message: "User not found." });
 
-    if (user.partner) {
+  if (user.partner) {
       const partner = await User.findById(user.partner);
       return res.status(200).json({
         paired: true,
         partner: { firstName: partner.firstName, lastName: partner.lastName },
         pairedAt: user.pairedAt,
+        relationshipStartDate: user.relationshipStartDate,
       });
     }
 
@@ -81,6 +82,26 @@ exports.pairWithCode = async (req, res) => {
     });
   } catch (err) {
     console.error("pairWithCode error:", err);
+    res.status(500).json({ message: "Something went wrong." });
+  }
+};
+// PUT /api/pair/start-date  { date }
+exports.setStartDate = async (req, res) => {
+  try {
+    const { date } = req.body;
+    if (!date) return res.status(400).json({ message: "Pick a date first." });
+
+    const me = await User.findById(req.userId);
+    if (!me.partner) return res.status(400).json({ message: "You need to pair with someone first." });
+
+    await User.updateMany(
+      { _id: { $in: [me._id, me.partner] } },
+      { $set: { relationshipStartDate: date } }
+    );
+
+    res.status(200).json({ message: "Saved!" });
+  } catch (err) {
+    console.error("setStartDate error:", err);
     res.status(500).json({ message: "Something went wrong." });
   }
 };

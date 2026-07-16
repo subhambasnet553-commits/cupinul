@@ -118,3 +118,25 @@ exports.deleteComment = async (req, res) => {
     res.status(500).json({ message: "Something went wrong." });
   }
 };
+exports.checkUnread = async (req, res) => {
+  try {
+    const User = require("../models/User");
+    const me = await User.findById(req.userId);
+    const latestPost = await Post.findOne().sort({ createdAt: -1 });
+
+    const hasNew = latestPost && (!me.lastCommunityVisit || latestPost.createdAt > me.lastCommunityVisit);
+    res.status(200).json({ hasNew: !!hasNew });
+  } catch (err) {
+    res.status(500).json({ hasNew: false });
+  }
+};
+
+exports.markVisited = async (req, res) => {
+  try {
+    const User = require("../models/User");
+    await User.findByIdAndUpdate(req.userId, { lastCommunityVisit: new Date() });
+    res.status(200).json({ message: "ok" });
+  } catch (err) {
+    res.status(500).json({ message: "error" });
+  }
+};
