@@ -1,5 +1,5 @@
 const axios = require("axios");
-
+console.log("Sending OTP to:", email);
 async function sendOtpEmail(toEmail, firstName, otp) {
   if (!process.env.BREVO_API_KEY) {
     console.warn("BREVO_API_KEY not set");
