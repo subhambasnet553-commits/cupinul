@@ -8,9 +8,8 @@ function signToken(userId) {
   });
 }
 
-function generateOtp() {
-  return String(Math.floor(100000 + Math.random() * 900000)); // 6 digits
-}
+const otp = null;
+const otpExpiry = null;
 
 const OTP_VALID_MINUTES = 10;
 
@@ -32,30 +31,29 @@ exports.register = async (req, res) => {
       return res.status(409).json({ message: "An account with that email already exists." });
     }
 
-    const otp = generateOtp();
     const otpExpiry = new Date(Date.now() + OTP_VALID_MINUTES * 60 * 1000);
 
-    const user = await User.create({
-      firstName,
-      lastName,
-      email,
-      password,
-      otp,
-      otpExpiry,
-      emailVerified: false,
-    });
+  const user = await User.create({
+  firstName,
+  lastName,
+  email,
+  password,
+  otp: null,
+  otpExpiry: null,
+  emailVerified: true,
+});
 
-    const emailResult = await sendOtpEmail(user.email, user.firstName, otp);
+    //const emailResult = await sendOtpEmail(user.email, user.firstName, otp);
 
     // No token yet — they need to verify the OTP first
-    res.status(201).json({
-      message: emailResult.sent
-        ? "Account created! Check your email for a verification code."
-        : "Account created, but we couldn't send the verification email right now. Tap 'Resend code' on the next screen to try again.",
-      email: user.email,
-      requiresVerification: true,
-      emailSent: emailResult.sent,
-    });
+const token = signToken(user._id);
+
+res.status(201).json({
+  message: "Account created successfully.",
+  token,
+  user,
+  requiresVerification: false,
+});
   } catch (err) {
     if (err.name === "ValidationError") {
       const firstError = Object.values(err.errors)[0].message;
@@ -147,7 +145,7 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password." });
     }
 
-    if (!user.emailVerified) {
+    /*if (!user.emailVerified) {
       // Send a fresh code so they're not stuck with an expired one
       const otp = generateOtp();
       user.otp = otp;
@@ -162,7 +160,7 @@ exports.login = async (req, res) => {
         requiresVerification: true,
         email: user.email,
       });
-    }
+    }*/
 
     const token = signToken(user._id);
 
