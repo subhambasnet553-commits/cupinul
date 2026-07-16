@@ -1,50 +1,60 @@
-const nodemailer = require("nodemailer");
-
-function getTransporter() {
-  return nodemailer.createTransport({
-    host: "smtp-relay.brevo.com",
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.BREVO_LOGIN,
-      pass: process.env.BREVO_SMTP_KEY,
-    },
-  });
-}
+const axios = require("axios");
 
 async function sendOtpEmail(toEmail, firstName, otp) {
-  // If email isn't configured, don't crash signup — just log it so local dev keeps working.
- if (!process.env.BREVO_LOGIN || !process.env.BREVO_SMTP_KEY) {
-    console.warn("BREVO credentials missing");
+  if (!process.env.BREVO_API_KEY) {
+    console.warn("BREVO_API_KEY not set");
     return { sent: false };
-}
+  }
 
   try {
-    const transporter = getTransporter();
-     await transporter.verify();
-      console.log("SMTP connection successful");
-    await transporter.sendMail({
-     from: '"Cupinul" cupinul0@gmail.com',
-      to: toEmail,
-      subject: "Your Cupinul verification code",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 400px; margin: 0 auto; padding: 30px; text-align: center;">
-          <h2 style="color: #e6437e;">Cupinul 💕</h2>
-          <p>Hi ${firstName || "there"},</p>
-          <p>Here's your verification code:</p>
-          <p style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #9c1155; margin: 20px 0;">${otp}</p>
-          <p style="font-size: 13px; color: #888;">This code expires in 10 minutes. If you didn't request this, you can ignore this email.</p>
-        </div>
-      `,
-    });
+    await axios.post(
+      "https://api.brevo.com/v3/smtp/email",
+      {
+        sender: {
+          name: "Cupinul",
+          email: "cupinul0@gmail.com"
+        },
+        to: [
+          {
+            email: toEmail,
+            name: firstName || "User"
+          }
+        ],
+        subject: "Your Cupinul verification code",
+        htmlContent: `
+          <div style="font-family:Arial,sans-serif;max-width:400px;margin:auto;padding:20px;text-align:center;">
+            <h2 style="color:#e6437e;">Cupinul 💕</h2>
+            <p>Hello ${firstName || "there"},</p>
+            <p>Your verification code is:</p>
+
+            <h1 style="letter-spacing:8px;color:#9c1155;">
+              ${otp}
+            </h1>
+
+            <p>This code expires in 10 minutes.</p>
+          </div>
+        `
+      },
+      {
+        headers: {
+          "api-key": process.env.BREVO_API_KEY,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
     return { sent: true };
+
   } catch (err) {
-    // IMPORTANT: never let an email failure block account creation or login.
-    // Log it clearly (visible in Render's logs) and let the caller decide what to do.
-    
-    console.error("EMAIL ERROR:", err);
-    console.error(`Fallback — the OTP for ${toEmail} is: ${otp}`);
-    return { sent: false, error: err.message };
+
+    console.error(
+      err.response?.data || err.message
+    );
+
+    return {
+      sent: false,
+      error: err.message
+    };
   }
 }
 
