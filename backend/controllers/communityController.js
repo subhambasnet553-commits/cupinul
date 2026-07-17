@@ -7,13 +7,13 @@ function formatAuthor(user) {
 
 exports.createPost = async (req, res) => {
   try {
-    const { content } = req.body;
-    if (!content || !content.trim()) return res.status(400).json({ message: "Write something first." });
+    const { content, imageData } = req.body;
+    if ((!content || !content.trim()) && !imageData) return res.status(400).json({ message: "Write something or add a photo first." });
 
-    const post = await Post.create({ author: req.userId, content: content.trim() });
+    const post = await Post.create({ author: req.userId, content: (content || "").trim(), imageData: imageData || "" });
     await post.populate("author", "firstName profilePicture");
 
-    res.status(201).json({ post: { id: post._id, content: post.content, createdAt: post.createdAt, author: formatAuthor(post.author), likesCount: 0, likedByMe: false, commentsCount: 0 } });
+    res.status(201).json({ post: { id: post._id, content: post.content, imageData: post.imageData, createdAt: post.createdAt, author: formatAuthor(post.author), likesCount: 0, likedByMe: false, commentsCount: 0 } });
   } catch (err) {
     console.error("createPost error:", err);
     res.status(500).json({ message: "Something went wrong." });
@@ -30,6 +30,7 @@ exports.listPosts = async (req, res) => {
       posts: posts.map((p) => ({
         id: p._id,
         content: p.content,
+        imageData: p.imageData,
         createdAt: p.createdAt,
         author: formatAuthor(p.author),
         likesCount: p.likes.length,

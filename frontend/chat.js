@@ -55,11 +55,11 @@ async function loadHistory() {
 function connectSocket() {
   const socket = io({ auth: { token } });
 
-  socket.on("receive_message", (msg) => {
+ socket.on("receive_message", (msg) => {
+    const nearBottom = isNearBottom();
     renderMessage(msg);
-    scrollToBottom();
+    if (nearBottom) scrollToBottom();
   });
-
   document.getElementById("messageForm").addEventListener("submit", (e) => {
     e.preventDefault();
     const input = document.getElementById("messageInput");
@@ -85,7 +85,10 @@ function renderMessage(msg) {
 function scrollToBottom() {
   messagesList.scrollTop = messagesList.scrollHeight;
 }
-
+function isNearBottom() {
+  const el = messagesList;
+  return el.scrollHeight - el.scrollTop - el.clientHeight < 150;
+}
 function formatTime(dateStr) {
   return new Date(dateStr).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
 }

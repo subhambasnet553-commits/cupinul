@@ -16,12 +16,13 @@ exports.getProfile = async (req, res) => {
 // "skip" just marks onboarding done without requiring bio/picture
 exports.updateProfile = async (req, res) => {
   try {
-    const { bio, profilePicture } = req.body;
+   const { bio, firstName, lastName, profilePicture } = req.body;
     const user = await User.findById(req.userId);
     if (!user) return res.status(404).json({ message: "User not found." });
 
     if (bio !== undefined) user.bio = bio.slice(0, 280);
-    if (profilePicture !== undefined) user.profilePicture = profilePicture;
+    if (firstName !== undefined && firstName.trim()) user.firstName = firstName.trim();
+    if (lastName !== undefined && lastName.trim()) user.lastName = lastName.trim();
     user.onboarded = true;
 
     await user.save();

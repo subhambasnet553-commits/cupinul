@@ -676,6 +676,37 @@ a:hover{
   background: linear-gradient(135deg, #ff6f9c, #e6437e);
   color: white;
   border-color: transparent;
+}.profile-tab{
+  flex: 1;
+  border: 1px solid rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.4);
+  color: #9c1155;
+  padding: 10px 6px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+}
+.profile-tab.active{
+  background: linear-gradient(135deg, #ff6f9c, #e6437e);
+  color: white;
+  border-color: transparent;
+}
+.profile-tab{
+  flex: 1;
+  border: 1px solid rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.4);
+  color: #9c1155;
+  padding: 10px 6px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+}
+.profile-tab.active{
+  background: linear-gradient(135deg, #ff6f9c, #e6437e);
+  color: white;
+  border-color: transparent;
 }
 .avatar-wrap{
   position: relative;
@@ -751,6 +782,9 @@ a:hover{
   width: 100%;
   box-sizing: border-box;
   margin-bottom: 5px;
+}
+.security-input{
+  text-transform: none !important;
 }
 .inbox-empty{
   text-align: center;
@@ -1272,6 +1306,33 @@ a:hover{
   background: rgba(255,255,255,0.7);
 }
 .community-float-btn{ position: fixed; top: 132px; right: 20px; z-index: 5; border: none; background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); border-radius: 50%; width: 46px; height: 46px; font-size: 22px; color: #e6437e; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); } .community-float-btn:hover{ background: rgba(255,255,255,0.7); }
+.community-page{
+  width: 700px;
+  max-width: 92vw;
+  display: flex;
+  flex-direction: column;
+  height: 80dvh;
+  height: 80vh;
+  max-height: 700px;
+  box-sizing: border-box;
+}
+#communitySection{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.community-posts-list{
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px;
+  margin-bottom: 15px;
+}
 /* ---------- Chat Page ---------- */
 .chat-page{
   display: flex;
@@ -1296,7 +1357,6 @@ a:hover{
   overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   gap: 10px;
   padding: 10px 4px;
   margin-bottom: 15px;
@@ -1592,4 +1652,130 @@ a:hover{
   background: #ff3b3b;
   border-radius: 50%;
   border: 2px solid white;
+}
+/* Custom scrollbar for scrollable areas (chat, community, entries lists) */
+.messages-list::-webkit-scrollbar,
+.community-posts-list::-webkit-scrollbar,
+.entries-list::-webkit-scrollbar,
+.profile-panel::-webkit-scrollbar {
+  width: 8px;
+}
+.messages-list::-webkit-scrollbar-track,
+.community-posts-list::-webkit-scrollbar-track,
+.entries-list::-webkit-scrollbar-track,
+.profile-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.messages-list::-webkit-scrollbar-thumb,
+.community-posts-list::-webkit-scrollbar-thumb,
+.entries-list::-webkit-scrollbar-thumb,
+.profile-panel::-webkit-scrollbar-thumb {
+  background: rgba(230, 67, 126, 0.4);
+  border-radius: 10px;
+}
+.messages-list::-webkit-scrollbar-thumb:hover,
+.community-posts-list::-webkit-scrollbar-thumb:hover,
+.entries-list::-webkit-scrollbar-thumb:hover,
+.profile-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(230, 67, 126, 0.65);
+}
+
+/* Firefox */
+.messages-list,
+.community-posts-list,
+.entries-list,
+.profile-panel {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(230, 67, 126, 0.4) transparent;
+}
+.post-image{
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  display: block;
+}
+.post-image-preview-compose{
+  max-width: 120px;
+  max-height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+.post-image-remove-btn{
+  border: none;
+  background: rgba(192,57,43,0.15);
+  color: #c0392b;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  margin-left: 8px;
+  cursor: pointer;
+}
+.message-attach-btn{
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  color: #9c1155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+/* ---------- Dark Mode ---------- */
+.dark-mode body{
+  background: linear-gradient(150deg, #1a0d14 0%, #2b1220 25%, #3d0f28 50%, #2b1220 75%, #1a0d14 100%);
+}
+.dark-mode .login_page,
+.dark-mode .diary_page{
+  background-color: rgba(40, 15, 30, 0.55);
+  border-color: rgba(255,255,255,0.12);
+}
+.dark-mode .home-title,
+.dark-mode .title,
+.dark-mode .subtitle,
+.dark-mode .diary_page,
+.dark-mode .entry-content,
+.dark-mode .entry-date,
+.dark-mode .post-author-name,
+.dark-mode .profile-label,
+.dark-mode .pref-title,
+.dark-mode .section-label,
+.dark-mode .empty-msg{
+  color: #ffd6e8 !important;
+}
+.dark-mode .entry-card,
+.dark-mode .write-box,
+.dark-mode .my-code-box,
+.dark-mode .timer-box,
+.dark-mode .pair-panel,
+.dark-mode .onboarding-panel,
+.dark-mode .stat-box,
+.dark-mode .summary-card{
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+}
+.dark-mode .entry-textarea,
+.dark-mode .event-select,
+.dark-mode .event-input,
+.dark-mode .message-input,
+.dark-mode .bio-textarea,
+.dark-mode .security-input,
+.dark-mode .pair-input{
+  background: rgba(255,255,255,0.9) !important;
+}
+.dark-mode .profile-panel{
+  background: rgba(30, 12, 22, 0.85) !important;
+}
+.dark-mode .row-btn.placeholder,
+.dark-mode .tab-btn,
+.dark-mode .profile-tab{
+  background: rgba(255,255,255,0.08) !important;
+  color: #ffd6e8 !important;
+}
+.dark-mode .quiz-option-btn{
+  background: rgba(255,255,255,0.08) !important;
+  color: #ffd6e8 !important;
 }

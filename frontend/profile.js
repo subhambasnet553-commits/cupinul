@@ -23,7 +23,8 @@ function buildProfilePanelHTML() {
         <button class="profile-tab" data-tab="inbox"><i class='bx bx-envelope'></i></button>
       </div>
 
-      <!-- Edit Profile -->
+      
+    <!-- Edit Profile -->
       <div class="profile-tab-content" id="tab-edit">
         <div class="avatar-wrap">
           <img id="avatarPreview" class="avatar-preview" src="" style="display:none;" />
@@ -31,6 +32,13 @@ function buildProfilePanelHTML() {
           <label for="avatarInput" class="avatar-upload-btn"><i class='bx bx-camera'></i></label>
           <input type="file" id="avatarInput" accept="image/*" style="display:none;">
         </div>
+        <button type="button" id="removePictureBtn" class="skip-link" style="display:none;">Remove picture</button>
+
+        <label class="profile-label">First Name</label>
+        <input type="text" id="firstNameInput" class="pair-input security-input">
+       <label class="profile-label">Last Name</label>
+        <input type="text" id="lastNameInput" class="pair-input security-input">
+       
 
         <label class="profile-label">Bio</label>
         <textarea id="bioInput" class="bio-textarea" maxlength="280" placeholder="Tell your partner a little about you..."></textarea>
@@ -80,7 +88,15 @@ function buildProfilePanelHTML() {
           <option value="purple">Purple</option>
           <option value="blue">Blue</option>
         </select>
-
+         <div class="pref-row">
+          <div>
+            <p class="pref-title">Dark Mode</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="prefDarkMode">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
         <label class="profile-label">My diary entries unlock after (days)</label>
         <input type="number" id="prefUnlockDays" class="pair-input security-input" min="1" max="365">
 
@@ -142,19 +158,25 @@ async function loadProfileIntoPanel() {
 
     document.getElementById("bioInput").value = data.user.bio || "";
     document.getElementById("bioCount").textContent = (data.user.bio || "").length;
-
+    document.getElementById("firstNameInput").value = data.user.firstName || "";
+    document.getElementById("lastNameInput").value = data.user.lastName || "";
     if (data.user.profilePicture) {
       document.getElementById("avatarPreview").src = data.user.profilePicture;
       document.getElementById("avatarPreview").style.display = "block";
       document.getElementById("avatarPlaceholder").style.display = "none";
+      document.getElementById("removePictureBtn").style.display = "block";
+    } else {
+      document.getElementById("avatarPreview").style.display = "none";
+      document.getElementById("avatarPlaceholder").style.display = "flex";
+      document.getElementById("removePictureBtn").style.display = "none";
     }
-
     const prefs = data.user.preferences || {};
     document.getElementById("prefNotifyEntry").checked = prefs.notifyOnEntry !== false;
     document.getElementById("prefNotifyPlan").checked = prefs.notifyOnPlan !== false;
     document.getElementById("prefReminderDays").value = prefs.reminderDays ?? 3;
     document.getElementById("prefTheme").value = prefs.theme || "pink";
     document.getElementById("prefUnlockDays").value = prefs.unlockDays ?? 30;
+    document.getElementById("prefDarkMode").checked = localStorage.getItem("darkMode") === "true";
   } catch (err) {
     // silently fail, panel just shows blank fields
   }
@@ -247,7 +269,9 @@ function escapeHtmlP(str) {
 
 function initProfilePanel() {
   document.body.insertAdjacentHTML("beforeend", buildProfilePanelHTML());
-
+    document.getElementById("prefDarkMode").addEventListener("change", (e) => {
+    toggleDarkMode(e.target.checked);
+  });
   // Floating chat button, placed just below the profile icon
   if (!document.getElementById("chatFloatBtn")) {
     document.body.insertAdjacentHTML(
@@ -271,7 +295,27 @@ function initProfilePanel() {
   document.getElementById("profileBtn")?.addEventListener("click", openProfilePanel);
   document.getElementById("profileCloseBtn").addEventListener("click", closeProfilePanel);
   document.getElementById("profileOverlay").addEventListener("click", closeProfilePanel);
+    // Avatar upload preview
+  document.getElementById("avatarInput").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      document.getElementById("avatarPreview").src = reader.result;
+      document.getElementById("avatarPreview").style.display = "block";
+      document.getElementById("avatarPlaceholder").style.display = "none";
+      document.getElementById("removePictureBtn").style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  });
 
+  // Remove picture
+  document.getElementById("removePictureBtn").addEventListener("click", () => {
+    document.getElementById("avatarPreview").src = "";
+    document.getElementById("avatarPreview").style.display = "none";
+    document.getElementById("avatarPlaceholder").style.display = "flex";
+    document.getElementById("removePictureBtn").style.display = "none";
+  });
   // Tabs
   document.querySelectorAll(".profile-tab").forEach((tab) => {
     tab.addEventListener("click", () => {
@@ -292,31 +336,23 @@ function initProfilePanel() {
   });
 
   // Avatar upload preview
-  document.getElementById("avatarInput").addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      document.getElementById("avatarPreview").src = reader.result;
-      document.getElementById("avatarPreview").style.display = "block";
-      document.getElementById("avatarPlaceholder").style.display = "none";
-    };
-    reader.readAsDataURL(file);
-  });
 
   // Save profile
-  document.getElementById("saveProfileBtn").addEventListener("click", async () => {
+        document.getElementById("saveProfileBtn").addEventListener("click", async () => {
     const msgEl = document.getElementById("profileMsg");
     const bio = document.getElementById("bioInput").value;
-    const avatarSrc = document.getElementById("avatarPreview").src;
-    const profilePicture = document.getElementById("avatarPreview").style.display !== "none" ? avatarSrc : "";
+    const firstName = document.getElementById("firstNameInput").value;
+    const lastName = document.getElementById("lastNameInput").value;
+    const avatarVisible = document.getElementById("avatarPreview").style.display !== "none";
+    const profilePicture = avatarVisible ? document.getElementById("avatarPreview").src : "";
 
     try {
       const res = await fetch(`${PROFILE_API}/api/profile`, {
         method: "PUT",
         headers: profileHeaders,
-        body: JSON.stringify({ bio, profilePicture }),
+        body: JSON.stringify({ bio, firstName, lastName, profilePicture }),
       });
+      if (profilePicture !== undefined) user.profilePicture = profilePicture;
       const data = await res.json();
       msgEl.style.display = "block";
       msgEl.textContent = res.ok ? "Saved!" : data.message;

@@ -8,6 +8,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
     <link rel="apple-touch-icon" href="favicon-180.png">
     <title>Community</title>
+    <script src="theme.js"></script>
     <link rel="stylesheet" href="style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   </head>
@@ -19,19 +20,24 @@
       <div id="loadingState">
         <p class="title">Loading...</p>
       </div>
-
-      <div id="communitySection" style="display:none;">
+<div id="communitySection" style="display:none;">
         <a href="home.html" class="back-link"><i class='bx bx-arrow-back'></i> Home</a>
         <p class="title">Community</p>
         <p class="subtitle">Share stories and thoughts with everyone on Cupinul</p>
 
-        <div class="write-box">
-          <textarea id="postInput" class="entry-textarea" maxlength="2000" placeholder="Share a story or thought..."></textarea>
-          <button id="postSubmitBtn" class="cacc entry-submit-btn">Post</button>
-          <p id="postMsg" class="write-msg" style="display:none;"></p>
-        </div>
+        <div id="postsList" class="community-posts-list"></div>
 
-        <div id="postsList" class="entries-list community-posts-list"></div>
+    <div id="postImagePreviewWrap" style="display:none;">
+          <img id="postImagePreview" class="post-image-preview-compose">
+          <button type="button" id="removePostImageBtn" class="post-image-remove-btn"><i class='bx bx-x'></i></button>
+        </div>
+        <form id="postForm" class="message-form">
+          <label for="postImageInput" class="message-attach-btn"><i class='bx bx-image-add'></i></label>
+          <input type="file" id="postImageInput" accept="image/*" style="display:none;">
+          <input type="text" id="postInput" class="message-input" maxlength="2000" placeholder="Share a story or thought..." autocomplete="off">
+          <button type="submit" class="message-send-btn"><i class='bx bx-send'></i></button>
+        </form>
+        <p id="postMsg" class="write-msg" style="display:none;"></p>
       </div>
     </div>
 

@@ -15,11 +15,40 @@ const communitySection = document.getElementById("communitySection");
 
 let currentPosts = [];
 let activePostId = null;
+let composedImageData = null;
 
+document.getElementById("postImageInput").addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX_DIM = 1000;
+      let { width, height } = img;
+      if (width > height && width > MAX_DIM) { height = Math.round((height * MAX_DIM) / width); width = MAX_DIM; }
+      else if (height > MAX_DIM) { width = Math.round((width * MAX_DIM) / height); height = MAX_DIM; }
+      const canvas = document.createElement("canvas");
+      canvas.width = width; canvas.height = height;
+      canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+      composedImageData = canvas.toDataURL("image/jpeg", 0.8);
+      document.getElementById("postImagePreview").src = composedImageData;
+      document.getElementById("postImagePreviewWrap").style.display = "block";
+    };
+    img.src = event.target.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById("removePostImageBtn").addEventListener("click", () => {
+  composedImageData = null;
+  document.getElementById("postImageInput").value = "";
+  document.getElementById("postImagePreviewWrap").style.display = "none";
+});
 async function init() {
   try {
     loadingState.style.display = "none";
-    communitySection.style.display = "block";
+    communitySection.style.display = "flex";
     fetch(`${API_BASE_URL}/api/community/mark-visited`, { method: "POST", headers });
     await loadPosts();
   } catch (err) {
@@ -28,12 +57,14 @@ async function init() {
 }
 init();
 
-document.getElementById("postSubmitBtn").addEventListener("click", async () => {
+
+document.getElementById("postForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
   const msgEl = document.getElementById("postMsg");
   const content = document.getElementById("postInput").value.trim();
-  if (!content) {
+  if (!content && !composedImageData) {
     msgEl.style.display = "block";
-    msgEl.textContent = "Write something first.";
+    msgEl.textContent = "Write something or add a photo first.";
     return;
   }
 
@@ -41,7 +72,7 @@ document.getElementById("postSubmitBtn").addEventListener("click", async () => {
     const res = await fetch(`${API_BASE_URL}/api/community/posts`, {
       method: "POST",
       headers,
-      body: JSON.stringify({ content }),
+      body: JSON.stringify({ content, imageData: composedImageData }),
     });
     const data = await res.json();
 
@@ -52,6 +83,9 @@ document.getElementById("postSubmitBtn").addEventListener("click", async () => {
     }
 
     document.getElementById("postInput").value = "";
+    composedImageData = null;
+    document.getElementById("postImageInput").value = "";
+    document.getElementById("postImagePreviewWrap").style.display = "none";
     msgEl.style.display = "none";
     loadPosts();
   } catch (err) {
@@ -65,7 +99,7 @@ async function loadPosts() {
     const res = await fetch(`${API_BASE_URL}/api/community/posts`, { headers });
     const data = await res.json();
     currentPosts = data.posts;
-
+    currentPosts = data.posts.slice().reverse();
     const listEl = document.getElementById("postsList");
     listEl.innerHTML =
       currentPosts
@@ -83,7 +117,8 @@ async function loadPosts() {
               <p class="post-date">${formatDate(p.createdAt)}</p>
             </div>
           </div>
-          <p class="entry-content post-content">${escapeHtml(p.content)}</p>
+         ${p.imageData ? `<img src="${p.imageData}" class="post-image">` : ""}
+          ${p.content ? `<p class="entry-content post-content">${escapeHtml(p.content)}</p>` : ""}
           <div class="post-actions">
             <button class="post-like-btn ${p.likedByMe ? "liked" : ""}" data-id="${p.id}">
               <i class='bx ${p.likedByMe ? "bxs-heart" : "bx-heart"}'></i> ${p.likesCount}
@@ -102,6 +137,11 @@ async function loadPosts() {
     document.querySelectorAll(".post-comment-btn").forEach((btn) =>
       btn.addEventListener("click", () => openComments(btn.dataset.id))
     );
+   if (!window._communityScrolledOnce) {
+      const listEl2 = document.getElementById("postsList");
+      listEl2.scrollTop = listEl2.scrollHeight;
+      window._communityScrolledOnce = true;
+    }
   } catch (err) {
     document.getElementById("postsList").innerHTML = '<p class="empty-msg">Could not load posts.</p>';
   }
