@@ -7,6 +7,11 @@ const messageSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    recipient: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     // Deterministic room id shared by exactly one couple: their two user IDs, sorted and joined.
     roomId: {
       type: String,

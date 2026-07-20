@@ -18,13 +18,12 @@ function buildProfilePanelHTML() {
         <button class="profile-tab active" data-tab="edit"><i class='bx bx-user'></i></button>
         <button class="profile-tab" data-tab="summary"><i class='bx bx-heart'></i></button>
         <button class="profile-tab" data-tab="stats"><i class='bx bx-bar-chart-alt-2'></i></button>
-        <button class="profile-tab" data-tab="prefs"><i class='bx bx-sliders'></i></button>
+        <button class="profile-tab" data-tab="prefs"><i class='bx bx-slider-alt'></i></button>
         <button class="profile-tab" data-tab="security"><i class='bx bx-lock-alt'></i></button>
         <button class="profile-tab" data-tab="inbox"><i class='bx bx-envelope'></i></button>
       </div>
 
-      
-    <!-- Edit Profile -->
+      <!-- Edit Profile -->
       <div class="profile-tab-content" id="tab-edit">
         <div class="avatar-wrap">
           <img id="avatarPreview" class="avatar-preview" src="" style="display:none;" />
@@ -36,9 +35,8 @@ function buildProfilePanelHTML() {
 
         <label class="profile-label">First Name</label>
         <input type="text" id="firstNameInput" class="pair-input security-input">
-       <label class="profile-label">Last Name</label>
+        <label class="profile-label">Last Name</label>
         <input type="text" id="lastNameInput" class="pair-input security-input">
-       
 
         <label class="profile-label">Bio</label>
         <textarea id="bioInput" class="bio-textarea" maxlength="280" placeholder="Tell your partner a little about you..."></textarea>
@@ -82,21 +80,13 @@ function buildProfilePanelHTML() {
         <label class="profile-label">Remind me if I haven't written in (days)</label>
         <input type="number" id="prefReminderDays" class="pair-input security-input" min="1" max="30">
 
-        <label class="profile-label">Theme accent color</label>
-        <select id="prefTheme" class="event-select">
-          <option value="pink">Pink</option>
-          <option value="purple">Purple</option>
-          <option value="blue">Blue</option>
-        </select>
-         <div class="pref-row">
-          <div>
-            <p class="pref-title">Dark Mode</p>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="prefDarkMode">
-            <span class="toggle-slider"></span>
-          </label>
+        <label class="profile-label">Theme</label>
+        <div class="theme-picker">
+          <button type="button" class="theme-swatch theme-swatch-pink" data-theme="pink" title="Pink"></button>
+          <button type="button" class="theme-swatch theme-swatch-dark" data-theme="dark" title="Dark"></button>
+          <button type="button" class="theme-swatch theme-swatch-gothic" data-theme="gothic" title="Gothic"></button>
         </div>
+
         <label class="profile-label">My diary entries unlock after (days)</label>
         <input type="number" id="prefUnlockDays" class="pair-input security-input" min="1" max="365">
 
@@ -132,10 +122,12 @@ function buildProfilePanelHTML() {
         <button id="deleteAccountBtn" class="danger-btn"><i class='bx bx-trash'></i> Delete My Account</button>
         <p id="dangerMsg" class="write-msg" style="display:none;"></p>
       </div>
-     <!-- Inbox -->
+
+      <!-- Inbox -->
       <div class="profile-tab-content" id="tab-inbox" style="display:none;">
         <div id="inboxContent"><p class="empty-msg">Loading...</p></div>
       </div>
+    </div>
   `;
 }
 
@@ -160,6 +152,7 @@ async function loadProfileIntoPanel() {
     document.getElementById("bioCount").textContent = (data.user.bio || "").length;
     document.getElementById("firstNameInput").value = data.user.firstName || "";
     document.getElementById("lastNameInput").value = data.user.lastName || "";
+
     if (data.user.profilePicture) {
       document.getElementById("avatarPreview").src = data.user.profilePicture;
       document.getElementById("avatarPreview").style.display = "block";
@@ -170,13 +163,17 @@ async function loadProfileIntoPanel() {
       document.getElementById("avatarPlaceholder").style.display = "flex";
       document.getElementById("removePictureBtn").style.display = "none";
     }
+
     const prefs = data.user.preferences || {};
     document.getElementById("prefNotifyEntry").checked = prefs.notifyOnEntry !== false;
     document.getElementById("prefNotifyPlan").checked = prefs.notifyOnPlan !== false;
     document.getElementById("prefReminderDays").value = prefs.reminderDays ?? 3;
-    document.getElementById("prefTheme").value = prefs.theme || "pink";
     document.getElementById("prefUnlockDays").value = prefs.unlockDays ?? 30;
-    document.getElementById("prefDarkMode").checked = localStorage.getItem("darkMode") === "true";
+
+    const currentTheme = localStorage.getItem("theme") || "pink";
+    document.querySelectorAll(".theme-swatch").forEach((el) =>
+      el.classList.toggle("active", el.dataset.theme === currentTheme)
+    );
   } catch (err) {
     // silently fail, panel just shows blank fields
   }
@@ -243,6 +240,7 @@ async function loadStatsTab() {
     el.innerHTML = '<p class="empty-msg">Could not load stats.</p>';
   }
 }
+
 async function loadInboxTab() {
   const el = document.getElementById("inboxContent");
   try {
@@ -260,6 +258,7 @@ async function loadInboxTab() {
     el.innerHTML = '<p class="empty-msg">Could not load notifications.</p>';
   }
 }
+
 function escapeHtmlP(str) {
   if (!str) return "";
   const div = document.createElement("div");
@@ -267,11 +266,23 @@ function escapeHtmlP(str) {
   return div.innerHTML;
 }
 
+async function checkUnreadBadge() {
+  try {
+    const res = await fetch(`${PROFILE_API}/api/notifications`, { headers: profileHeaders });
+    const data = await res.json();
+    document.getElementById("profileBtn")?.classList.toggle("has-badge", data.unreadCount > 0);
+  } catch (err) {}
+
+  try {
+    const res2 = await fetch(`${PROFILE_API}/api/community/unread`, { headers: profileHeaders });
+    const data2 = await res2.json();
+    document.getElementById("communityFloatBtn")?.classList.toggle("has-badge", data2.hasNew);
+  } catch (err) {}
+}
+
 function initProfilePanel() {
   document.body.insertAdjacentHTML("beforeend", buildProfilePanelHTML());
-    document.getElementById("prefDarkMode").addEventListener("change", (e) => {
-    toggleDarkMode(e.target.checked);
-  });
+
   // Floating chat button, placed just below the profile icon
   if (!document.getElementById("chatFloatBtn")) {
     document.body.insertAdjacentHTML(
@@ -279,10 +290,11 @@ function initProfilePanel() {
       `<button id="chatFloatBtn" class="chat-float-btn" title="Chat"><i class='bx bxs-message-dots'></i></button>`
     );
     document.getElementById("chatFloatBtn").addEventListener("click", () => {
-      window.location.href = "chat.html";
+      window.location.href = "messages.html";
     });
   }
-// Floating community button, placed below the chat button
+
+  // Floating community button, placed below the chat button
   if (!document.getElementById("communityFloatBtn")) {
     document.body.insertAdjacentHTML(
       "beforeend",
@@ -292,30 +304,20 @@ function initProfilePanel() {
       window.location.href = "community.html";
     });
   }
+
   document.getElementById("profileBtn")?.addEventListener("click", openProfilePanel);
   document.getElementById("profileCloseBtn").addEventListener("click", closeProfilePanel);
   document.getElementById("profileOverlay").addEventListener("click", closeProfilePanel);
-    // Avatar upload preview
-  document.getElementById("avatarInput").addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      document.getElementById("avatarPreview").src = reader.result;
-      document.getElementById("avatarPreview").style.display = "block";
-      document.getElementById("avatarPlaceholder").style.display = "none";
-      document.getElementById("removePictureBtn").style.display = "block";
-    };
-    reader.readAsDataURL(file);
+
+  // Theme swatches
+  document.querySelectorAll(".theme-swatch").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      applyTheme(btn.dataset.theme);
+      document.querySelectorAll(".theme-swatch").forEach((s) => s.classList.remove("active"));
+      btn.classList.add("active");
+    });
   });
 
-  // Remove picture
-  document.getElementById("removePictureBtn").addEventListener("click", () => {
-    document.getElementById("avatarPreview").src = "";
-    document.getElementById("avatarPreview").style.display = "none";
-    document.getElementById("avatarPlaceholder").style.display = "flex";
-    document.getElementById("removePictureBtn").style.display = "none";
-  });
   // Tabs
   document.querySelectorAll(".profile-tab").forEach((tab) => {
     tab.addEventListener("click", () => {
@@ -336,9 +338,29 @@ function initProfilePanel() {
   });
 
   // Avatar upload preview
+  document.getElementById("avatarInput").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      document.getElementById("avatarPreview").src = reader.result;
+      document.getElementById("avatarPreview").style.display = "block";
+      document.getElementById("avatarPlaceholder").style.display = "none";
+      document.getElementById("removePictureBtn").style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Remove picture
+  document.getElementById("removePictureBtn").addEventListener("click", () => {
+    document.getElementById("avatarPreview").src = "";
+    document.getElementById("avatarPreview").style.display = "none";
+    document.getElementById("avatarPlaceholder").style.display = "flex";
+    document.getElementById("removePictureBtn").style.display = "none";
+  });
 
   // Save profile
-        document.getElementById("saveProfileBtn").addEventListener("click", async () => {
+  document.getElementById("saveProfileBtn").addEventListener("click", async () => {
     const msgEl = document.getElementById("profileMsg");
     const bio = document.getElementById("bioInput").value;
     const firstName = document.getElementById("firstNameInput").value;
@@ -352,7 +374,6 @@ function initProfilePanel() {
         headers: profileHeaders,
         body: JSON.stringify({ bio, firstName, lastName, profilePicture }),
       });
-      if (profilePicture !== undefined) user.profilePicture = profilePicture;
       const data = await res.json();
       msgEl.style.display = "block";
       msgEl.textContent = res.ok ? "Saved!" : data.message;
@@ -373,7 +394,6 @@ function initProfilePanel() {
           notifyOnEntry: document.getElementById("prefNotifyEntry").checked,
           notifyOnPlan: document.getElementById("prefNotifyPlan").checked,
           reminderDays: Number(document.getElementById("prefReminderDays").value),
-          theme: document.getElementById("prefTheme").value,
           unlockDays: Number(document.getElementById("prefUnlockDays").value),
         }),
       });
@@ -463,7 +483,7 @@ function initProfilePanel() {
       const data = await res.json();
       msgEl.style.display = "block";
       msgEl.textContent = data.message;
-      if (res.ok) setTimeout(() => window.location.href = "home.html", 1200);
+      if (res.ok) setTimeout(() => (window.location.href = "home.html"), 1200);
     } catch (err) {
       msgEl.style.display = "block";
       msgEl.textContent = "Could not reach the server.";
@@ -487,27 +507,16 @@ function initProfilePanel() {
       msgEl.textContent = data.message;
       if (res.ok) {
         localStorage.removeItem("token");
-        setTimeout(() => window.location.href = "structure.html", 1200);
+        setTimeout(() => (window.location.href = "structure.html"), 1200);
       }
     } catch (err) {
       msgEl.style.display = "block";
       msgEl.textContent = "Could not reach the server.";
     }
   });
-}
-checkUnreadBadge();
-  setInterval(checkUnreadBadge, 30000); // poll every 30s
-document.addEventListener("DOMContentLoaded", initProfilePanel);
-async function checkUnreadBadge() {
-  try {
-    const res = await fetch(`${PROFILE_API}/api/notifications`, { headers: profileHeaders });
-    const data = await res.json();
-    document.getElementById("profileBtn")?.classList.toggle("has-badge", data.unreadCount > 0);
-  } catch (err) {}
 
-  try {
-    const res2 = await fetch(`${PROFILE_API}/api/community/unread`, { headers: profileHeaders });
-    const data2 = await res2.json();
-    document.getElementById("communityFloatBtn")?.classList.toggle("has-badge", data2.hasNew);
-  } catch (err) {}
+  checkUnreadBadge();
+  setInterval(checkUnreadBadge, 30000); // poll every 30s
 }
+
+document.addEventListener("DOMContentLoaded", initProfilePanel);

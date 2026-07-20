@@ -23,6 +23,7 @@ const galleryRoutes = require("./routes/galleryRoutes");
 const communityRoutes = require("./routes/communityRoutes");
 const app = express();
 const notificationRoutes = require("./routes/notificationRoutes");
+const userRoutes = require("./routes/userRoutes");
 // Connect to MongoDB
 connectDB();
 // Middleware
@@ -40,6 +41,7 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/community", communityRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/users", userRoutes);
 // Serve the frontend (register.html, structure.html, style.css, script.js, etc.)
 app.use(express.static(path.join(__dirname, "../frontend")));
 
@@ -75,26 +77,29 @@ io.on("connection", async (socket) => {
     console.error("socket connection error:", err);
   }
 
+io.on("connection", (socket) => {
+  socket.on("join_conversation", ({ userId }) => {
+    if (!userId) return;
+    const roomId = getRoomId(socket.userId, userId);
+    socket.currentRoomId = roomId;
+    socket.currentPartnerId = userId;
+    socket.join(roomId);
+  });
+
   socket.on("send_message", async (data) => {
     try {
-      if (!socket.roomId || !data?.content?.trim()) return;
+      if (!socket.currentRoomId || !data?.content?.trim()) return;
 
       const { encrypted, iv } = encryptText(data.content.trim());
       const message = await Message.create({
         sender: socket.userId,
-        roomId: socket.roomId,
+        recipient: socket.currentPartnerId,
+        roomId: socket.currentRoomId,
         encryptedContent: encrypted,
         iv,
       });
-          const Notification = require("./models/Notification");
-      await Notification.create({
-        user: me.partner,
-        type: "message",
-        text: `New message from your partner`,
-      });
-      // Plaintext only ever travels over this authenticated, encrypted-in-transit
-      // (HTTPS/WSS) connection — it's never stored in plaintext in the database.
-      io.to(socket.roomId).emit("receive_message", {
+
+      io.to(socket.currentRoomId).emit("receive_message", {
         id: message._id,
         sender: socket.userId,
         content: data.content.trim(),
@@ -104,6 +109,7 @@ io.on("connection", async (socket) => {
       console.error("send_message error:", err);
     }
   });
+});
 });
 
 const PORT = process.env.PORT || 5000;

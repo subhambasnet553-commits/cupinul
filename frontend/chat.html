@@ -11,6 +11,7 @@
     <script src="theme.js"></script>
     <link rel="stylesheet" href="style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
   </head>
   <body>
 
@@ -22,8 +23,8 @@
       </div>
 
       <div id="chatSection" style="display:none;">
-        <a href="home.html" class="back-link"><i class='bx bx-arrow-back'></i> Home</a>
-        <p class="title">Chat</p>
+        <a href="messages.html" class="back-link"><i class='bx bx-arrow-back'></i> Messages</a>
+        <p class="title" id="chatPartnerName">Chat</p>
         <p class="subtitle"><i class='bx bx-lock-alt'></i> Messages are encrypted</p>
 
         <div id="messagesList" class="messages-list"></div>
@@ -36,6 +37,7 @@
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
+    <script src="theme.js"></script>
     <script src="decor.js"></script>
     <script src="profile.js"></script>
     <script src="chat.js"></script>

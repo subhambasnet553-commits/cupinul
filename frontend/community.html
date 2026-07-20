@@ -11,6 +11,7 @@
     <script src="theme.js"></script>
     <link rel="stylesheet" href="style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
   </head>
   <body>
 
@@ -20,14 +21,15 @@
       <div id="loadingState">
         <p class="title">Loading...</p>
       </div>
-<div id="communitySection" style="display:none;">
+
+      <div id="communitySection" style="display:none;">
         <a href="home.html" class="back-link"><i class='bx bx-arrow-back'></i> Home</a>
         <p class="title">Community</p>
         <p class="subtitle">Share stories and thoughts with everyone on Cupinul</p>
 
         <div id="postsList" class="community-posts-list"></div>
 
-    <div id="postImagePreviewWrap" style="display:none;">
+        <div id="postImagePreviewWrap" style="display:none;">
           <img id="postImagePreview" class="post-image-preview-compose">
           <button type="button" id="removePostImageBtn" class="post-image-remove-btn"><i class='bx bx-x'></i></button>
         </div>
@@ -50,6 +52,32 @@
       <div class="comment-input-row">
         <input type="text" id="commentInput" class="message-input" placeholder="Write a comment...">
         <button id="commentSendBtn" class="message-send-btn"><i class='bx bx-send'></i></button>
+      </div>
+    </div>
+
+    <!-- Public profile view -->
+    <div id="userProfileOverlay" class="profile-overlay"></div>
+    <div id="userProfilePanel" class="user-profile-modal">
+      <button id="userProfileCloseBtn" class="profile-close-btn"><i class='bx bx-x'></i></button>
+      <div class="user-profile-content">
+        <div class="avatar-wrap" style="margin:0 auto 15px auto;">
+          <img id="upAvatar" class="avatar-preview" style="display:none;">
+          <div id="upAvatarPlaceholder" class="avatar-placeholder"><i class='bx bxs-user-circle'></i></div>
+        </div>
+        <p class="up-name" id="upName"></p>
+
+        <div class="up-info-list">
+          <p class="up-info-row"><span>Paired with</span><b id="upPaired">—</b></p>
+          <p class="up-info-row"><span>Together since</span><b id="upSince">—</b></p>
+          <p class="up-info-row"><span>Followers</span><b id="upFollowers">0</b></p>
+        </div>
+
+        <p class="up-bio" id="upBio"></p>
+
+        <div class="user-profile-actions">
+          <button id="upFollowBtn" class="huge-btn primary panel-submit-btn">Follow</button>
+          <button id="upMessageBtn" class="huge-btn primary panel-submit-btn">Message</button>
+        </div>
       </div>
     </div>
 

@@ -1,10 +1,16 @@
-// Applies dark mode instantly on every page load, based on saved preference.
+// Applies the saved theme instantly on every page load (before paint),
+// avoiding a flash of the wrong theme. Supports: pink (default), dark, gothic.
 (function () {
-  const isDark = localStorage.getItem("darkMode") === "true";
-  if (isDark) document.documentElement.classList.add("dark-mode");
+  const theme = localStorage.getItem("theme") || "pink";
+  if (theme !== "pink") {
+    document.documentElement.classList.add(`theme-${theme}`);
+  }
 })();
 
-function toggleDarkMode(enabled) {
-  localStorage.setItem("darkMode", enabled);
-  document.documentElement.classList.toggle("dark-mode", enabled);
+function applyTheme(theme) {
+  document.documentElement.classList.remove("theme-dark", "theme-gothic");
+  localStorage.setItem("theme", theme);
+  if (theme !== "pink") {
+    document.documentElement.classList.add(`theme-${theme}`);
+  }
 }

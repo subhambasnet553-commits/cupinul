@@ -106,7 +106,7 @@ async function loadPosts() {
         .map(
           (p) => `
         <div class="entry-card community-post-card">
-          <div class="post-author-row">
+         <div class="post-author-row clickable-author" data-userid="${p.author.id}">
             ${
               p.author.profilePicture
                 ? `<img src="${p.author.profilePicture}" class="post-author-avatar">`
@@ -125,6 +125,7 @@ async function loadPosts() {
             </button>
             <button class="post-comment-btn" data-id="${p.id}">
               <i class='bx bx-comment'></i> ${p.commentsCount}
+          
             </button>
           </div>
         </div>`
@@ -136,6 +137,9 @@ async function loadPosts() {
     );
     document.querySelectorAll(".post-comment-btn").forEach((btn) =>
       btn.addEventListener("click", () => openComments(btn.dataset.id))
+    );
+    document.querySelectorAll(".clickable-author").forEach((el) =>
+      el.addEventListener("click", () => openUserProfile(el.dataset.userid))
     );
    if (!window._communityScrolledOnce) {
       const listEl2 = document.getElementById("postsList");
@@ -231,3 +235,67 @@ function escapeHtml(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+async function openUserProfile(userId) {
+  document.getElementById("userProfileOverlay").classList.add("open");
+  document.getElementById("userProfilePanel").classList.add("open");
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/users/${userId}/profile`, { headers });
+    const data = await res.json();
+
+    if (data.profilePicture) {
+      document.getElementById("upAvatar").src = data.profilePicture;
+      document.getElementById("upAvatar").style.display = "block";
+      document.getElementById("upAvatarPlaceholder").style.display = "none";
+    } else {
+      document.getElementById("upAvatar").style.display = "none";
+      document.getElementById("upAvatarPlaceholder").style.display = "flex";
+    }
+
+    document.getElementById("upName").textContent = `${data.firstName} ${data.lastName || ""}`.trim();
+    document.getElementById("upPaired").textContent = data.partnerName || "Not paired";
+
+    const sinceDate = data.relationshipStartDate || data.pairedAt;
+    document.getElementById("upSince").textContent = sinceDate
+      ? new Date(sinceDate).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" })
+      : "—";
+
+    document.getElementById("upFollowers").textContent = data.followersCount;
+    document.getElementById("upBio").innerHTML = data.bio ? escapeHtml(data.bio) : "<i>No bio yet</i>";
+
+    const followBtn = document.getElementById("upFollowBtn");
+    const messageBtn = document.getElementById("upMessageBtn");
+
+    if (data.isMe) {
+      followBtn.style.display = "none";
+      messageBtn.style.display = "none";
+    } else {
+      followBtn.style.display = "flex";
+      messageBtn.style.display = "flex";
+      followBtn.textContent = data.isFollowedByMe ? "Following" : "Follow";
+      followBtn.onclick = () => toggleFollowUser(userId, followBtn);
+      messageBtn.onclick = () => (window.location.href = `chat.html?to=${userId}`);
+    }
+  } catch (err) {
+    document.getElementById("upName").textContent = "Could not load profile.";
+  }
+}
+
+function closeUserProfile() {
+  document.getElementById("userProfileOverlay").classList.remove("open");
+  document.getElementById("userProfilePanel").classList.remove("open");
+}
+
+async function toggleFollowUser(userId, btn) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/users/${userId}/follow`, { method: "POST", headers });
+    const data = await res.json();
+    btn.textContent = data.following ? "Following" : "Follow";
+    document.getElementById("upFollowers").textContent = `${data.followersCount} follower${data.followersCount === 1 ? "" : "s"}`;
+  } catch (err) {
+    alert("Could not reach the server.");
+  }
+}
+
+document.getElementById("userProfileCloseBtn").addEventListener("click", closeUserProfile);
+document.getElementById("userProfileOverlay").addEventListener("click", closeUserProfile);

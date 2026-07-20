@@ -96,7 +96,9 @@ document.getElementById("pairForm")?.addEventListener("submit", async (e) => {
       errEl.style.display = "block";
       return;
     }
-   window.location.href = "relationship-start.html";
+  playPairAnimation(() => {
+      window.location.href = "relationship-start.html";
+    });
   } catch (err) {
     errEl.textContent = "Could not reach the server.";
     errEl.style.display = "block";

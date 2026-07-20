@@ -1,8 +1,15 @@
+
 const API_BASE_URL = "";
 
 const token = localStorage.getItem("token");
 if (!token) {
   window.location.href = "structure.html";
+}
+
+const params = new URLSearchParams(window.location.search);
+const targetUserId = params.get("to");
+if (!targetUserId) {
+  window.location.href = "messages.html";
 }
 
 const headers = {
@@ -18,19 +25,6 @@ let myId = null;
 
 async function init() {
   try {
-    const pairRes = await fetch(`${API_BASE_URL}/api/pair/my-code`, { headers });
-    const pairData = await pairRes.json();
-
-    if (pairRes.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "structure.html";
-      return;
-    }
-    if (!pairData.paired) {
-      window.location.href = "home.html";
-      return;
-    }
-
     loadingState.style.display = "none";
     chatSection.style.display = "flex";
 
@@ -43,9 +37,18 @@ async function init() {
 init();
 
 async function loadHistory() {
-  const res = await fetch(`${API_BASE_URL}/api/chat/history`, { headers });
+  const res = await fetch(`${API_BASE_URL}/api/chat/history/${targetUserId}`, { headers });
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "structure.html";
+    return;
+  }
   const data = await res.json();
   myId = data.myId;
+
+  if (data.otherUser) {
+    document.getElementById("chatPartnerName").textContent = data.otherUser.firstName;
+  }
 
   messagesList.innerHTML = "";
   data.messages.forEach(renderMessage);
@@ -55,11 +58,14 @@ async function loadHistory() {
 function connectSocket() {
   const socket = io({ auth: { token } });
 
- socket.on("receive_message", (msg) => {
+  socket.emit("join_conversation", { userId: targetUserId });
+
+  socket.on("receive_message", (msg) => {
     const nearBottom = isNearBottom();
     renderMessage(msg);
     if (nearBottom) scrollToBottom();
   });
+
   document.getElementById("messageForm").addEventListener("submit", (e) => {
     e.preventDefault();
     const input = document.getElementById("messageInput");
@@ -85,10 +91,11 @@ function renderMessage(msg) {
 function scrollToBottom() {
   messagesList.scrollTop = messagesList.scrollHeight;
 }
+
 function isNearBottom() {
-  const el = messagesList;
-  return el.scrollHeight - el.scrollTop - el.clientHeight < 150;
+  return messagesList.scrollHeight - messagesList.scrollTop - messagesList.clientHeight < 150;
 }
+
 function formatTime(dateStr) {
   return new Date(dateStr).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
 }
