@@ -120,3 +120,6 @@ document.getElementById("quizBtn")?.addEventListener("click", () => {
 document.getElementById("galleryBtn")?.addEventListener("click", () => {
   window.location.href = "gallery.html";
 });
+document.getElementById("bucketBtn")?.addEventListener("click", () => {
+  window.location.href = "bucketlist.html";
+});

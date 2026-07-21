@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+    <link rel="apple-touch-icon" href="favicon-180.png">
+    <title>Bucket List</title>
+    <script src="theme.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  </head>
+  <body>
+
+    <button class="profile-btn" id="profileBtn" title="Profile"><i class='bx bxs-user-circle'></i></button>
+
+    <div class="diary_page bucket-page" id="app">
+      <div id="loadingState">
+        <p class="title">Loading...</p>
+      </div>
+
+      <div id="bucketSection" style="display:none;">
+        <a href="home.html" class="back-link"><i class='bx bx-arrow-back'></i> Home</a>
+        <p class="title">Our Bucket List</p>
+
+        <div class="bucket-progress-wrap">
+          <svg class="bucket-ring" viewBox="0 0 120 120">
+            <circle class="bucket-ring-bg" cx="60" cy="60" r="52"></circle>
+            <circle id="bucketRingFill" class="bucket-ring-fill" cx="60" cy="60" r="52"></circle>
+          </svg>
+          <div class="bucket-ring-label">
+            <p class="bucket-ring-percent" id="bucketPercent">0%</p>
+            <p class="bucket-ring-sub" id="bucketFraction">0 / 0</p>
+          </div>
+        </div>
+
+        <form id="bucketForm" class="message-form">
+          <input type="text" id="bucketInput" class="message-input" maxlength="200" placeholder="Add something to your bucket list..." autocomplete="off">
+          <button type="submit" class="message-send-btn"><i class='bx bx-plus'></i></button>
+        </form>
+
+        <div id="bucketList" class="entries-list" style="margin-top:20px;"></div>
+      </div>
+    </div>
+
+    <script src="decor.js"></script>
+    <script src="profile.js"></script>
+    <script src="bucketlist.js"></script>
+  </body>
+</html>

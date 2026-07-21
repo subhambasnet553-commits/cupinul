@@ -1971,7 +1971,55 @@ a:hover{
 .theme-gothic a{
   color: #d4183d !important;
 }
-
+.theme-gothic .login_page,
+.theme-gothic .diary_page{
+  background: #0a0808 !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  border-radius: 4px !important;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.9),
+    0 0 0 1px rgba(0,0,0,0.8),
+    inset 0 1px 0 rgba(255,255,255,0.05) !important;
+}
+.theme-gothic .entry-textarea,
+.theme-gothic .event-select,
+.theme-gothic .event-input,
+.theme-gothic .message-input,
+.theme-gothic .bio-textarea,
+.theme-gothic .security-input,
+.theme-gothic .pair-input{
+  background: #050404 !important;
+  color: #d4cfcc !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  border-radius: 2px !important;
+}
+.theme-gothic .tab-btn{
+  background: rgba(255,255,255,0.03) !important;
+  color: #8a8280 !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 2px !important;
+}
+.theme-gothic .tab-btn.active{
+  background: #8b0000 !important;
+  color: #f0ece8 !important;
+}
+.theme-gothic .entry-card{
+  background: rgba(255,255,255,0.02) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 2px !important;
+}
+.theme-gothic .entry-date{
+  color: #8a8280 !important;
+}
+.theme-gothic .profile-btn,
+.theme-gothic .chat-float-btn,
+.theme-gothic .community-float-btn{
+  background: rgba(255,255,255,0.06) !important;
+  color: #d4cfcc !important;
+}
+.theme-gothic .back-link{
+  color: #d4cfcc !important;
+}
 /* ---------- Pairing Animation ---------- */
 .pair-anim-overlay{
   position: fixed;
@@ -2046,4 +2094,123 @@ a:hover{
   0%   { transform: scale(0.3); opacity: 0; }
   40%  { transform: scale(1.6); opacity: 1; }
   100% { transform: scale(2.4); opacity: 0; }
+}
+.bucket-progress-wrap{
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 10px auto 25px auto;
+}
+.bucket-ring{
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.bucket-ring-bg{
+  fill: none;
+  stroke: rgba(156,17,85,0.12);
+  stroke-width: 10;
+}
+.bucket-ring-fill{
+  fill: none;
+  stroke: #e6437e;
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s ease;
+}
+.bucket-ring-label{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.bucket-ring-percent{
+  font-size: 26px;
+  font-weight: bold;
+  color: #9c1155;
+  margin: 0;
+}
+.bucket-ring-sub{
+  font-size: 12px;
+  color: #9c1155;
+  opacity: 0.75;
+  margin: 2px 0 0 0;
+}
+.bucket-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.bucket-item-done .bucket-item-text{
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+.bucket-check-label{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  flex: 1;
+}
+.bucket-checkbox{
+  display: none;
+}
+.bucket-checkmark{
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #e6437e;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s;
+}
+.bucket-checkbox:checked + .bucket-checkmark{
+  background: #e6437e;
+}
+.bucket-checkbox:checked + .bucket-checkmark::after{
+  content: "✓";
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+}
+.bucket-item-text{
+  color: #4a1030;
+  font-size: 14px;
+}
+.bucket-delete-btn{
+  border: none;
+  background: none;
+  color: #c0392b;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+.bucket-delete-btn:hover{
+  opacity: 1;
+}
+
+.theme-gothic .bucket-ring-bg{
+  stroke: rgba(255,255,255,0.08) !important;
+}
+.theme-gothic .bucket-ring-fill{
+  stroke: #8b0000 !important;
+}
+.theme-gothic .bucket-ring-percent,
+.theme-gothic .bucket-ring-sub{
+  color: #d4cfcc !important;
+}
+.theme-gothic .bucket-checkmark{
+  border-color: #8b0000 !important;
+}
+.theme-gothic .bucket-checkbox:checked + .bucket-checkmark{
+  background: #8b0000 !important;
+}
+.theme-gothic .bucket-item-text{
+  color: #d4cfcc !important;
 }
