@@ -243,3 +243,52 @@ exports.getStats = async (req, res) => {
     res.status(500).json({ message: "Something went wrong." });
   }
 };
+// GET /api/profile/full
+exports.getFullProfile = async (req, res) => {
+  try {
+    const Follow = require("../models/Follow");
+    const Post = require("../models/Post");
+    const GalleryPhoto = require("../models/GalleryPhoto");
+    const DiaryEntry = require("../models/DiaryEntry");
+
+    const me = await User.findById(req.userId).populate("partner", "firstName profilePicture");
+
+    const followersCount = await Follow.countDocuments({ following: req.userId });
+    const followingCount = await Follow.countDocuments({ follower: req.userId });
+    const postsCount = await Post.countDocuments({ author: req.userId });
+    const totalEntries = await DiaryEntry.countDocuments({ author: req.userId });
+
+    let totalPhotos = 0;
+    let daysTogether = 0;
+    if (me.partner) {
+      totalPhotos = await GalleryPhoto.countDocuments({
+        $or: [
+          { owner: req.userId, partner: me.partner._id },
+          { owner: me.partner._id, partner: req.userId },
+        ],
+      });
+      const startDate = me.relationshipStartDate || me.pairedAt;
+      if (startDate) {
+        daysTogether = Math.floor((Date.now() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24));
+      }
+    }
+
+    res.status(200).json({
+      firstName: me.firstName,
+      lastName: me.lastName,
+      bio: me.bio,
+      profilePicture: me.profilePicture,
+      followersCount,
+      followingCount,
+      postsCount,
+      partner: me.partner ? { firstName: me.partner.firstName, profilePicture: me.partner.profilePicture } : null,
+      daysTogether,
+      totalPhotos,
+      totalEntries,
+      joinedAt: me.createdAt,
+    });
+  } catch (err) {
+    console.error("getFullProfile error:", err);
+    res.status(500).json({ message: "Something went wrong." });
+  }
+};

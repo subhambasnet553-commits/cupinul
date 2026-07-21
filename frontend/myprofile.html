@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+    <link rel="apple-touch-icon" href="favicon-180.png">
+    <title>My Profile</title>
+    <script src="theme.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  </head>
+  <body>
+
+    <button class="profile-btn" id="profileBtn" style="display:none;"></button>
+
+    <div class="diary_page myprofile-page" id="app">
+      <div id="loadingState">
+        <p class="title">Loading...</p>
+      </div>
+
+      <div id="myProfileSection" style="display:none;">
+        <a href="home.html" class="back-link"><i class='bx bx-arrow-back'></i> Home</a>
+
+        <div class="mp-avatar-wrap">
+          <img id="mpAvatar" class="mp-avatar" style="display:none;">
+          <div id="mpAvatarPlaceholder" class="avatar-placeholder mp-avatar"><i class='bx bxs-user-circle'></i></div>
+        </div>
+        <p class="mp-name" id="mpName"></p>
+
+        <div class="mp-stats-row">
+          <div class="mp-stat">
+            <p class="mp-stat-value" id="mpFollowers">0</p>
+            <p class="mp-stat-label">Followers</p>
+          </div>
+          <div class="mp-stat">
+            <p class="mp-stat-value" id="mpFollowing">0</p>
+            <p class="mp-stat-label">Following</p>
+          </div>
+          <div class="mp-stat">
+            <p class="mp-stat-value" id="mpPosts">0</p>
+            <p class="mp-stat-label">Posts</p>
+          </div>
+        </div>
+
+        <div id="mpPairedCard" class="mp-paired-card" style="display:none;">
+          <img id="mpPartnerAvatar" class="mp-partner-avatar" style="display:none;">
+          <div id="mpPartnerAvatarPlaceholder" class="avatar-placeholder mp-partner-avatar"><i class='bx bxs-user-circle'></i></div>
+          <div>
+            <p class="mp-paired-label">Paired with</p>
+            <p class="mp-partner-name" id="mpPartnerName"></p>
+            <p class="mp-days-together" id="mpDaysTogether"></p>
+          </div>
+        </div>
+
+        <div class="mp-bio-card">
+          <p class="section-label"><i class='bx bx-user'></i> About Me</p>
+          <p class="entry-content" id="mpBio"></p>
+        </div>
+
+        <div class="mp-action-row">
+          <button id="mpEditBtn" class="mp-action-btn"><i class='bx bx-edit'></i> Edit Profile</button>
+          <button id="mpShareBtn" class="mp-action-btn"><i class='bx bx-share-alt'></i> Share</button>
+          <button id="mpSettingsBtn" class="mp-action-btn"><i class='bx bx-cog'></i> Settings</button>
+        </div>
+
+        <p class="section-label" style="margin-top:25px;"><i class='bx bx-trophy'></i> Our Achievements</p>
+        <div class="mp-achievements-row">
+          <div class="mp-achievement mp-achievement-pink">
+            <i class='bx bxs-heart'></i>
+            <p class="mp-achievement-value" id="mpAchDays">0</p>
+            <p class="mp-achievement-label">Days Together</p>
+          </div>
+          <div class="mp-achievement mp-achievement-purple">
+            <i class='bx bx-camera'></i>
+            <p class="mp-achievement-value" id="mpAchPhotos">0</p>
+            <p class="mp-achievement-label">Photos</p>
+          </div>
+          <div class="mp-achievement mp-achievement-amber">
+            <i class='bx bx-book'></i>
+            <p class="mp-achievement-value" id="mpAchEntries">0</p>
+            <p class="mp-achievement-label">Diary Entries</p>
+          </div>
+        </div>
+
+        <p class="section-label" style="margin-top:25px;"><i class='bx bx-info-circle'></i> Account Info</p>
+        <div class="entry-card">
+          <p class="entry-date">Joined</p>
+          <p class="entry-content" id="mpJoined"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-nav mobile-only">
+      <a href="home.html" class="bottom-nav-item">
+        <i class='bx bxs-home'></i>
+        <span>Home</span>
+      </a>
+      <a href="messages.html" class="bottom-nav-item">
+        <i class='bx bx-message-dots'></i>
+        <span>Chat</span>
+      </a>
+      <a href="community.html" class="bottom-nav-item">
+        <i class='bx bx-group'></i>
+        <span>Community</span>
+      </a>
+      <a href="myprofile.html" class="bottom-nav-item active">
+        <i class='bx bx-user'></i>
+        <span>Profile</span>
+      </a>
+    </div>
+
+    <script src="decor.js"></script>
+    <script src="profile.js"></script>
+    <script src="myprofile.js"></script>
+  </body>
+</html>

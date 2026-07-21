@@ -126,7 +126,5 @@ document.getElementById("bucketBtn")?.addEventListener("click", () => {
 document.getElementById("hamburgerBtn")?.addEventListener("click", () => {
   document.getElementById("profileBtn")?.click();
 });
-document.getElementById("bottomNavProfileBtn")?.addEventListener("click", () => {
-  document.getElementById("profileBtn")?.click();
-});
+
 
