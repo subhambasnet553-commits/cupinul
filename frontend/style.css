@@ -441,12 +441,12 @@ a:hover{
 
 /* No card/box — content sits directly on the gradient */
 .home_page{
-  background: transparent;
-  border: none;
-  box-shadow: none;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
   padding: 0;
-  width: 700px;
-  max-width: 92vw;
+  box-sizing: border-box;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1251,10 +1251,14 @@ a:hover{
     padding: 40px 25px 60px 25px;
     max-width: 92vw;
   }
-  .diary_page, .home_page{
-    padding: 30px 20px;
-    width: 95vw;
-  }
+ .diary_page,
+.home_page{
+  width: 100%;
+  max-width: 700px;
+  padding: 30px 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
   .home-title{
     font-size: 28px;
   }
