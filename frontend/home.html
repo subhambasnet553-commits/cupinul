@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
     <link rel="apple-touch-icon" href="favicon-180.png">
-    <meta charset="UTF-8" />
     <title>Cupinul</title>
     <script src="theme.js"></script>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   </head>
   <body>
 
-    <button class="profile-btn" id="profileBtn" title="Profile">
-      <i class='bx bxs-user-circle'></i>
-    </button>
+    <button class="profile-btn" id="profileBtn" title="Profile"><i class='bx bxs-user-circle'></i></button>
 
     <div class="home_page" id="app">
 
@@ -26,7 +23,19 @@
       </div>
 
       <div id="homeContent" style="display:none;">
-        <p class="home-title">Cupinul</p>
+
+        <!-- Mobile-only header -->
+        <div class="home-header mobile-only">
+          <button class="hamburger-btn" id="hamburgerBtn"><i class='bx bx-menu'></i></button>
+          <div class="home-header-logo">
+            <p class="home-title">Cupinul</p>
+            <div class="home-title-underline"><i class='bx bxs-heart'></i></div>
+          </div>
+          <div class="home-header-spacer"></div>
+        </div>
+
+        <!-- Desktop-only title -->
+        <p class="home-title desktop-only">Cupinul</p>
 
         <!-- Not paired yet -->
         <div id="pairSection" style="display:none;">
@@ -50,20 +59,26 @@
           </div>
         </div>
 
-        <!-- Paired -->
+        <!-- Paired: together timer -->
         <div id="pairedSection" style="display:none;">
           <div class="huge-btn primary timer-huge">
+            <i class='bx bxs-heart timer-deco timer-deco-tl mobile-only'></i>
+            <i class='bx bxs-heart timer-deco timer-deco-br1 mobile-only'></i>
+            <i class='bx bxs-heart timer-deco timer-deco-br2 mobile-only'></i>
             <p class="timer-label-huge">Together for</p>
             <p class="timer-value-huge" id="timerValue">-- days</p>
           </div>
           <p class="paired-with-text" id="pairedWithText"></p>
         </div>
 
-        <!-- Row of buttons -->
-        <div class="button-row">
+        <!-- Mobile-only section divider -->
+        <div class="section-divider mobile-only"><span>Our Space</span></div>
+
+        <!-- Desktop nav (unchanged) -->
+        <div class="button-row desktop-only">
           <button class="huge-btn row-btn" id="writeBtn" style="display:none;">
             <i class='bx bx-edit'></i>
-            <span>Our Diary</span>
+            <span>Write something for your loved one</span>
           </button>
           <button class="huge-btn row-btn" id="quizBtn">
             <i class='bx bx-image-alt'></i>
@@ -82,13 +97,71 @@
             <span>Bucket List</span>
           </button>
         </div>
-      </div>
 
+        <!-- Mobile nav (new card layout) -->
+        <div class="mobile-only">
+          <div class="app-card-grid">
+            <a href="diary.html" class="app-card app-card-pink">
+              <div class="app-card-icon"><i class='bx bx-edit'></i></div>
+              <p class="app-card-title">Our Diary</p>
+              <p class="app-card-sub">Write our memories</p>
+              <i class='bx bx-chevron-right app-card-chevron'></i>
+            </a>
+            <a href="gallery.html" class="app-card app-card-purple">
+              <div class="app-card-icon"><i class='bx bx-images'></i></div>
+              <p class="app-card-title">Our Gallery</p>
+              <p class="app-card-sub">Photos of us</p>
+              <i class='bx bx-chevron-right app-card-chevron'></i>
+            </a>
+            <a href="calendar.html" class="app-card app-card-pink">
+              <div class="app-card-icon"><i class='bx bx-calendar-heart'></i></div>
+              <p class="app-card-title">Our Calendar</p>
+              <p class="app-card-sub">Special days</p>
+              <i class='bx bx-chevron-right app-card-chevron'></i>
+            </a>
+            <a href="quiz.html" class="app-card app-card-purple">
+              <div class="app-card-icon"><i class='bx bx-help-circle'></i></div>
+              <p class="app-card-title">Couple's Quiz</p>
+              <p class="app-card-sub">How well do we know each other?</p>
+              <i class='bx bx-chevron-right app-card-chevron'></i>
+            </a>
+          </div>
+
+          <a href="bucketlist.html" class="app-card app-card-wide app-card-amber">
+            <div class="app-card-icon"><i class='bx bx-list-check'></i></div>
+            <div class="app-card-wide-text">
+              <p class="app-card-title">Bucket List</p>
+              <p class="app-card-sub">Dreams to achieve together</p>
+            </div>
+            <i class='bx bx-chevron-right app-card-chevron'></i>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile-only bottom nav -->
+    <div class="bottom-nav mobile-only">
+      <a href="home.html" class="bottom-nav-item active">
+        <i class='bx bxs-home'></i>
+        <span>Home</span>
+      </a>
+      <a href="messages.html" class="bottom-nav-item">
+        <i class='bx bx-message-dots'></i>
+        <span>Chat</span>
+      </a>
+      <a href="community.html" class="bottom-nav-item">
+        <i class='bx bx-group'></i>
+        <span>Community</span>
+      </a>
+      <button class="bottom-nav-item bottom-nav-profile-btn" id="bottomNavProfileBtn">
+        <i class='bx bx-user'></i>
+        <span>Profile</span>
+      </button>
     </div>
 
     <script src="decor.js"></script>
     <script src="profile.js"></script>
-    <script src="pair-animation.js"></script>
     <script src="home.js"></script>
   </body>
 </html>

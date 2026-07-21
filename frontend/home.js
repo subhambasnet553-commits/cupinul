@@ -123,3 +123,10 @@ document.getElementById("galleryBtn")?.addEventListener("click", () => {
 document.getElementById("bucketBtn")?.addEventListener("click", () => {
   window.location.href = "bucketlist.html";
 });
+document.getElementById("hamburgerBtn")?.addEventListener("click", () => {
+  document.getElementById("profileBtn")?.click();
+});
+document.getElementById("bottomNavProfileBtn")?.addEventListener("click", () => {
+  document.getElementById("profileBtn")?.click();
+});
+

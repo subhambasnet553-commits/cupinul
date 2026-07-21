@@ -2214,3 +2214,386 @@ a:hover{
 .theme-gothic .bucket-item-text{
   color: #d4cfcc !important;
 }
+/* ---------- Home Header ---------- */
+.home-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.hamburger-btn{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.4);
+  color: #9c1155;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.home-header-spacer{
+  width: 40px;
+}
+.home-header-logo{
+  text-align: center;
+}
+.home-header-logo .home-title{
+  margin: 0;
+  font-size: 26px;
+}
+.home-title-underline{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+.home-title-underline::before,
+.home-title-underline::after{
+  content: "";
+  width: 30px;
+  height: 1px;
+  background: rgba(156,17,85,0.4);
+}
+.home-title-underline i{
+  font-size: 10px;
+  color: #e6437e;
+}
+
+/* ---------- Timer Card ---------- */
+.timer-card{
+  position: relative;
+  background: linear-gradient(135deg, #ff6f9c, #e6437e);
+  border-radius: 20px;
+  padding: 30px 20px;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+  margin-bottom: 10px;
+  box-shadow: 0 12px 30px rgba(219,39,119,0.35);
+}
+.timer-deco{
+  position: absolute;
+  color: rgba(255,255,255,0.25);
+  pointer-events: none;
+}
+.timer-deco-tl{ top: 15px; left: 15px; font-size: 26px; }
+.timer-deco-br1{ bottom: 12px; right: 18px; font-size: 30px; }
+.timer-deco-br2{ bottom: 22px; right: 42px; font-size: 18px; }
+.timer-card .paired-with-text{
+  color: rgba(255,255,255,0.9) !important;
+  margin: 8px 0 0 0 !important;
+}
+
+/* ---------- Section Divider ---------- */
+.section-divider{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 22px 0 16px 0;
+  color: #9c1155;
+  font-size: 13px;
+  opacity: 0.85;
+}
+.section-divider::before,
+.section-divider::after{
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(156,17,85,0.25);
+  max-width: 80px;
+}
+
+/* ---------- App Cards ---------- */
+.app-card-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.app-card{
+  position: relative;
+  display: block;
+  text-decoration: none;
+  border-radius: 18px;
+  padding: 20px 16px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: transform 0.15s;
+}
+.app-card:hover{
+  transform: translateY(-2px);
+}
+.app-card-pink{
+  background: linear-gradient(150deg, rgba(255,111,156,0.25), rgba(230,67,126,0.15));
+}
+.app-card-purple{
+  background: linear-gradient(150deg, rgba(180,100,220,0.22), rgba(140,60,190,0.13));
+}
+.app-card-amber{
+  background: linear-gradient(150deg, rgba(255,180,90,0.28), rgba(200,110,30,0.18));
+}
+.app-card-icon{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #9c1155;
+  margin-bottom: 12px;
+}
+.app-card-amber .app-card-icon{
+  color: #b5590a;
+}
+.app-card-title{
+  font-size: 15px;
+  font-weight: bold;
+  color: #4a1030;
+  margin: 0 0 3px 0;
+}
+.app-card-sub{
+  font-size: 11px;
+  color: #7a1140;
+  opacity: 0.8;
+  margin: 0;
+  padding-right: 20px;
+}
+.app-card-chevron{
+  position: absolute;
+  top: 20px;
+  right: 14px;
+  font-size: 18px;
+  color: #9c1155;
+  opacity: 0.5;
+}
+.app-card-wide{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+}
+.app-card-wide .app-card-icon{
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+.app-card-wide-text{
+  flex: 1;
+}
+.app-card-wide-text .app-card-sub{
+  padding-right: 0;
+}
+.app-card-wide .app-card-chevron{
+  position: static;
+  opacity: 0.6;
+}
+
+/* ---------- Bottom Nav (mobile) ---------- */
+.bottom-nav{
+  display: none;
+}
+@media (max-width: 700px){
+  .profile-btn, .chat-float-btn, .community-float-btn{
+    display: none !important;
+  }
+  .bottom-nav{
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255,255,255,0.6);
+    padding: 10px 0 max(10px, env(safe-area-inset-bottom));
+    z-index: 15;
+  }
+  .bottom-nav-item{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    text-decoration: none;
+    color: #9c1155;
+    opacity: 0.6;
+    font-size: 11px;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  .bottom-nav-item i{
+    font-size: 22px;
+  }
+  .bottom-nav-item.active{
+    opacity: 1;
+    color: #e6437e;
+  }
+  .home_page{
+    padding-bottom: 30px;
+  }
+  body{
+    padding-bottom: 70px;
+  }
+}
+
+/* Gothic theme touches for the new home layout */
+.theme-gothic .app-card{
+  background: rgba(255,255,255,0.03) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+.theme-gothic .app-card-icon{
+  background: rgba(255,255,255,0.08) !important;
+  color: #d4cfcc !important;
+}
+.theme-gothic .app-card-title{
+  color: #d4cfcc !important;
+}
+.theme-gothic .app-card-sub{
+  color: #8a8280 !important;
+}
+.theme-gothic .timer-card{
+  background: linear-gradient(135deg, #2a2224, #0e0a0b) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  box-shadow: 0 0 0 1px rgba(139,0,0,0.3), 0 12px 30px rgba(0,0,0,0.6) !important;
+}
+.theme-gothic .bottom-nav{
+  background: rgba(3,2,2,0.9) !important;
+  border-top-color: rgba(255,255,255,0.08) !important;
+}
+.theme-gothic .bottom-nav-item.active{
+  color: #d4183d !important;
+}
+.theme-gothic .hamburger-btn{
+  background: rgba(255,255,255,0.06) !important;
+  color: #d4cfcc !important;
+}
+/* ---------- Desktop/Mobile split ---------- */
+.mobile-only{ display: none; }
+.desktop-only{ display: block; }
+
+@media (max-width: 700px){
+  .mobile-only{ display: block; }
+  .desktop-only{ display: none !important; }
+
+  .profile-btn, .chat-float-btn, .community-float-btn{
+    display: none !important;
+  }
+
+  /* Header */
+  .home-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .hamburger-btn{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.4);
+    color: #9c1155;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .home-header-spacer{ width: 40px; }
+  .home-header-logo{ text-align: center; }
+  .home-header-logo .home-title{ margin: 0; font-size: 26px; }
+  .home-title-underline{
+    display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 4px;
+  }
+  .home-title-underline::before, .home-title-underline::after{
+    content: ""; width: 30px; height: 1px; background: rgba(156,17,85,0.4);
+  }
+  .home-title-underline i{ font-size: 10px; color: #e6437e; }
+
+  /* Compact timer card look, reusing the existing huge-btn/timer-huge element */
+  .timer-huge{
+    position: relative;
+    padding: 30px 20px !important;
+    overflow: hidden;
+  }
+  .timer-deco{
+    position: absolute;
+    color: rgba(255,255,255,0.25);
+    pointer-events: none;
+  }
+  .timer-deco-tl{ top: 15px; left: 15px; font-size: 26px; }
+  .timer-deco-br1{ bottom: 12px; right: 18px; font-size: 30px; }
+  .timer-deco-br2{ bottom: 22px; right: 42px; font-size: 18px; }
+
+  /* Section divider */
+  .section-divider{
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    margin: 22px 0 16px 0; color: #9c1155; font-size: 13px; opacity: 0.85;
+  }
+  .section-divider::before, .section-divider::after{
+    content: ""; flex: 1; height: 1px; background: rgba(156,17,85,0.25); max-width: 80px;
+  }
+
+  /* App cards */
+  .app-card-grid{
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;
+  }
+  .app-card{
+    position: relative; display: block; text-decoration: none; border-radius: 18px;
+    padding: 20px 16px; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  }
+  .app-card-pink{ background: linear-gradient(150deg, rgba(255,111,156,0.25), rgba(230,67,126,0.15)); }
+  .app-card-purple{ background: linear-gradient(150deg, rgba(180,100,220,0.22), rgba(140,60,190,0.13)); }
+  .app-card-amber{ background: linear-gradient(150deg, rgba(255,180,90,0.28), rgba(200,110,30,0.18)); }
+  .app-card-icon{
+    width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.35);
+    display: flex; align-items: center; justify-content: center; font-size: 24px;
+    color: #9c1155; margin-bottom: 12px;
+  }
+  .app-card-amber .app-card-icon{ color: #b5590a; }
+  .app-card-title{ font-size: 15px; font-weight: bold; color: #4a1030; margin: 0 0 3px 0; }
+  .app-card-sub{ font-size: 11px; color: #7a1140; opacity: 0.8; margin: 0; padding-right: 20px; }
+  .app-card-chevron{ position: absolute; top: 20px; right: 14px; font-size: 18px; color: #9c1155; opacity: 0.5; }
+  .app-card-wide{ display: flex; align-items: center; gap: 16px; padding: 18px 20px; }
+  .app-card-wide .app-card-icon{ margin-bottom: 0; flex-shrink: 0; }
+  .app-card-wide-text{ flex: 1; }
+  .app-card-wide-text .app-card-sub{ padding-right: 0; }
+  .app-card-wide .app-card-chevron{ position: static; opacity: 0.6; }
+
+  /* Bottom nav */
+  .bottom-nav{
+    display: flex; position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(255,255,255,0.85); backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255,255,255,0.6);
+    padding: 10px 0 max(10px, env(safe-area-inset-bottom));
+    z-index: 15;
+  }
+  .bottom-nav-item{
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    text-decoration: none; color: #9c1155; opacity: 0.6; font-size: 11px;
+    border: none; background: none; cursor: pointer;
+  }
+  .bottom-nav-item i{ font-size: 22px; }
+  .bottom-nav-item.active{ opacity: 1; color: #e6437e; }
+
+  .home_page{ padding-bottom: 30px; }
+  body{ padding-bottom: 70px; }
+
+  /* Gothic theme touches for mobile-only elements */
+  .theme-gothic .app-card{ background: rgba(255,255,255,0.03) !important; border-color: rgba(255,255,255,0.08) !important; }
+  .theme-gothic .app-card-icon{ background: rgba(255,255,255,0.08) !important; color: #d4cfcc !important; }
+  .theme-gothic .app-card-title{ color: #d4cfcc !important; }
+  .theme-gothic .app-card-sub{ color: #8a8280 !important; }
+  .theme-gothic .bottom-nav{ background: rgba(3,2,2,0.9) !important; border-top-color: rgba(255,255,255,0.08) !important; }
+  .theme-gothic .bottom-nav-item.active{ color: #d4183d !important; }
+  .theme-gothic .hamburger-btn{ background: rgba(255,255,255,0.06) !important; color: #d4cfcc !important; }
+}
