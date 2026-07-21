@@ -1405,36 +1405,43 @@ a:hover{
 }
 
 .message-form{
-    display:flex;
-    gap:10px;
-    flex-shrink:0;
-    padding-top:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  box-sizing:border-box;
 }
-
 .message-input{
-    flex:1;
-    border:1px solid rgba(156,17,85,.15);
-    border-radius:24px;
-    padding:12px 18px;
-    font-family:inherit;
-    font-size:14px;
-    color:#4a1030;
-    background:rgba(255,255,255,.75);
-    outline:none;
+  flex:1;
+  min-width:0;
+  border:1px solid rgba(156,17,85,.15);
+  border-radius:24px;
+  padding:12px 18px;
+  font-family:inherit;
+  font-size:14px;
+  color:#4a1030;
+  background:rgba(255,255,255,.75);
+  outline:none;
 }
 
 .message-send-btn{
-    width:46px;
-    height:46px;
-    border:none;
-    border-radius:50%;
-    background:linear-gradient(135deg,#ff6f9c,#e6437e);
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-shrink:0;
-    cursor:pointer;
+  width:48px;
+  height:48px;
+  min-width:48px;
+  flex-shrink:0;
+
+  border:none;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:linear-gradient(135deg,#ff6f9c,#e6437e);
+  color:#fff;
+  font-size:20px;
+  cursor:pointer;
+ cursor:pointer;
 }
 
 /* ---------- Gallery Page ---------- */
