@@ -304,7 +304,23 @@ function initProfilePanel() {
       window.location.href = "community.html";
     });
   }
-
+// Floating community button, placed below the chat button
+  if (!document.getElementById("communityFloatBtn")) {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `<button id="communityFloatBtn" class="community-float-btn" title="Community"><i class='bx bxs-group'></i></button>`
+    );
+    document.getElementById("communityFloatBtn").addEventListener("click", () => {
+      window.location.href = "community.html";
+    });
+  }// Floating premium button, placed below the community button
+  if (!document.getElementById("premiumFloatBtn")) {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `<button id="premiumFloatBtn" class="premium-float-btn" title="Premium"><i class='bx bxs-crown'></i></button>`
+    );
+    document.getElementById("premiumFloatBtn").addEventListener("click", openPremiumModal);
+  }
   document.getElementById("profileBtn")?.addEventListener("click", openProfilePanel);
   document.getElementById("profileCloseBtn").addEventListener("click", closeProfilePanel);
   document.getElementById("profileOverlay").addEventListener("click", closeProfilePanel);
@@ -520,3 +536,111 @@ function initProfilePanel() {
 }
 
 document.addEventListener("DOMContentLoaded", initProfilePanel);
+async function openPremiumModal() {
+  try {
+    const res = await fetch(`${PROFILE_API}/api/payment/status`, { headers: profileHeaders });
+    const data = await res.json();
+
+    if (data.isPremium) {
+      alert("You already have Premium unlocked! Enjoy Gallery and Bucket List. 💎");
+      return;
+    }
+  } catch (err) {}
+
+  if (!document.getElementById("premiumOverlay")) {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `
+      <div id="premiumOverlay" class="profile-overlay"></div>
+     <div id="premiumModal" class="user-profile-modal premium-modal">
+        <button id="premiumCloseBtn" class="profile-close-btn"><i class='bx bx-x'></i></button>
+        <i class='bx bxs-crown premium-crown-icon'></i>
+        <p class="up-name">Unlock Premium</p>
+        <p class="entry-content" style="margin-bottom:20px;">Get full access to <b>Our Gallery</b> and <b>Bucket List</b>.</p>
+        <p class="premium-price">₹40<span class="premium-price-period">/month</span></p>
+        <p class="entry-content" style="font-size:12px; opacity:0.75; margin-bottom:20px;">Renews monthly. Cancel anytime — access continues until your current period ends.</p>
+        <button id="premiumPayBtn" class="huge-btn primary panel-submit-btn"><i class='bx bx-credit-card'></i> Pay with Razorpay</button>
+        <p id="premiumMsg" class="write-msg" style="display:none;"></p>
+      </div>
+      `
+    );
+    document.getElementById("premiumCloseBtn").addEventListener("click", closePremiumModal);
+    document.getElementById("premiumOverlay").addEventListener("click", closePremiumModal);
+    document.getElementById("premiumPayBtn").addEventListener("click", startPremiumPayment);
+  }
+
+  document.getElementById("premiumOverlay").classList.add("open");
+  document.getElementById("premiumModal").classList.add("open");
+}
+
+function closePremiumModal() {
+  document.getElementById("premiumOverlay")?.classList.remove("open");
+  document.getElementById("premiumModal")?.classList.remove("open");
+}
+
+async function startPremiumPayment() {
+  const msgEl = document.getElementById("premiumMsg");
+  const btn = document.getElementById("premiumPayBtn");
+  btn.disabled = true;
+  btn.textContent = "Starting payment...";
+
+  try {
+    const res = await fetch(`${PROFILE_API}/api/payment/create-order`, { method: "POST", headers: profileHeaders });
+    const data = await res.json();
+
+    if (!res.ok) {
+      msgEl.style.display = "block";
+      msgEl.textContent = data.message;
+      btn.disabled = false;
+      btn.innerHTML = "<i class='bx bx-credit-card'></i> Pay with Razorpay";
+      return;
+    }
+
+    const options = {
+      key: data.keyId,
+      amount: data.amount,
+      currency: "INR",
+      name: "Cupinul",
+      description: "Unlock Gallery & Bucket List",
+      order_id: data.orderId,
+      handler: async function (response) {
+        btn.textContent = "Verifying...";
+        const verifyRes = await fetch(`${PROFILE_API}/api/payment/verify`, {
+          method: "POST",
+          headers: profileHeaders,
+          body: JSON.stringify({
+            orderId: response.razorpay_order_id,
+            paymentId: response.razorpay_payment_id,
+            signature: response.razorpay_signature,
+          }),
+        });
+        const verifyData = await verifyRes.json();
+
+        msgEl.style.display = "block";
+        msgEl.textContent = verifyData.message;
+
+        if (verifyRes.ok) {
+          setTimeout(() => window.location.reload(), 1200);
+        } else {
+          btn.disabled = false;
+          btn.innerHTML = "<i class='bx bx-credit-card'></i> Pay with Razorpay";
+        }
+      },
+      modal: {
+        ondismiss: function () {
+          btn.disabled = false;
+          btn.innerHTML = "<i class='bx bx-credit-card'></i> Pay with Razorpay";
+        },
+      },
+      theme: { color: "#e6437e" },
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+  } catch (err) {
+    msgEl.style.display = "block";
+    msgEl.textContent = "Could not reach the server.";
+    btn.disabled = false;
+    btn.innerHTML = "<i class='bx bx-credit-card'></i> Pay with Razorpay";
+  }
+}

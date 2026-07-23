@@ -66,6 +66,14 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
+    premiumSince: {
+      type: Date,
+      default: null,
+    },
     otp: {
       type: String,
       default: null,

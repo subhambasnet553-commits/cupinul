@@ -30,7 +30,18 @@ async function init() {
       window.location.href = "home.html";
       return;
     }
-
+    const premRes = await fetch(`${API_BASE_URL}/api/payment/status`, { headers });
+    const premData = await premRes.json();
+    if (!premData.isPremium) {
+      document.getElementById("loadingState").innerHTML = `
+        <div class="premium-lock-screen">
+          <i class='bx bxs-lock-alt'></i>
+          <p class="title" style="font-size:20px;">Gallery is a Premium feature</p>
+          <p class="entry-content">Unlock Gallery & Bucket List for ₹40.</p>
+          <a href="home.html" class="cacc entry-submit-btn" style="display:inline-block; text-decoration:none;">Go to Home to Unlock</a>
+        </div>`;
+      return;
+    }
     loadingState.style.display = "none";
     gallerySection.style.display = "block";
     loadPhotos();

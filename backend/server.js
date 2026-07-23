@@ -25,6 +25,7 @@ const app = express();
 const notificationRoutes = require("./routes/notificationRoutes");
 const userRoutes = require("./routes/userRoutes");
 const bucketRoutes = require("./routes/bucketRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 // Connect to MongoDB
 connectDB();
 // Middleware
@@ -44,6 +45,7 @@ app.use("/api/community", communityRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/bucket", bucketRoutes);
+app.use("/api/payment", paymentRoutes);
 // Serve the frontend (register.html, structure.html, style.css, script.js, etc.)
 app.use(express.static(path.join(__dirname, "../frontend")));
 

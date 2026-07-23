@@ -10,6 +10,9 @@ exports.uploadPhoto = async (req, res) => {
     }
 
     const me = await User.findById(req.userId);
+    if (!me.isPremium) {
+      return res.status(403).json({ message: "Unlock Gallery with Premium to use this.", requiresPremium: true });
+    }
     if (!me.partner) {
       return res.status(400).json({ message: "You need to pair with someone first." });
     }
@@ -39,6 +42,9 @@ exports.uploadPhoto = async (req, res) => {
 exports.listPhotos = async (req, res) => {
   try {
     const me = await User.findById(req.userId);
+    if (!me.isPremium) {
+      return res.status(403).json({ message: "Unlock Gallery with Premium to use this.", requiresPremium: true });
+    }
     if (!me.partner) {
       return res.status(400).json({ message: "You need to pair with someone first." });
     }

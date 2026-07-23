@@ -1,0 +1,4 @@
+#Wed Jul 22 21:14:50 IST 2026
+base.0=C\:\\Users\\subha\\Downloads\\login-signup-project (16)\\app\\build\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

@@ -7,6 +7,9 @@ exports.createItem = async (req, res) => {
     if (!text || !text.trim()) return res.status(400).json({ message: "Write something first." });
 
     const me = await User.findById(req.userId);
+    if (!me.isPremium) {
+      return res.status(403).json({ message: "Unlock Bucket List with Premium to use this.", requiresPremium: true });
+    }
     if (!me.partner) return res.status(400).json({ message: "You need to pair with someone first." });
 
     const item = await BucketItem.create({ owner: me._id, partner: me.partner, text: text.trim() });
@@ -20,6 +23,9 @@ exports.createItem = async (req, res) => {
 exports.listItems = async (req, res) => {
   try {
     const me = await User.findById(req.userId);
+    if (!me.isPremium) {
+      return res.status(403).json({ message: "Unlock Bucket List with Premium to use this.", requiresPremium: true });
+    }
     if (!me.partner) return res.status(400).json({ message: "You need to pair with someone first." });
 
     const items = await BucketItem.find({
