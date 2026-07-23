@@ -1293,6 +1293,12 @@ a:hover{
     padding: 22px 10px;
     font-size: 13px;
   }
+  .premium-float-btn{ 
+    display: flex !important;
+    top: 16px !important;
+     right: 16px !important;
+     left: auto !important; 
+  }
   .timer-value-huge{
     font-size: 24px;
   }
@@ -1303,6 +1309,7 @@ a:hover{
   .button-row{
     gap: 12px;
   }
+  
 }
 
 /* ---------- Chat Floating Button ---------- */
@@ -2507,7 +2514,12 @@ a:hover{
   .profile-btn, .chat-float-btn, .community-float-btn{
     display: none !important;
   }
-
+   .premium-float-btn{
+    display: flex !important;
+    top: 5px !important;
+    right: 16px !important;
+    left: auto !important;
+  }
   /* Header */
   .home-header{
     display: flex;
