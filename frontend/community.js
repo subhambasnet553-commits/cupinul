@@ -253,7 +253,16 @@ async function openUserProfile(userId) {
     }
 
     document.getElementById("upName").textContent = `${data.firstName} ${data.lastName || ""}`.trim();
-    document.getElementById("upPaired").textContent = data.partnerName || "Not paired";
+    document.getElementById("upHandle").textContent = `@${(data.firstName || "user").toLowerCase().replace(/\s+/g, "")}`;
+    document.getElementById("upVerifiedBadge").style.display = data.isPremium ? "inline-block" : "none";
+    document.getElementById("upNewBadge").style.display = data.isNew ? "inline-flex" : "none";
+
+    if (data.partnerName) {
+      document.getElementById("upPairedPill").style.display = "inline-flex";
+      document.getElementById("upPartnerNamePill").textContent = data.partnerName;
+    } else {
+      document.getElementById("upPairedPill").style.display = "none";
+    }
 
     const sinceDate = data.relationshipStartDate || data.pairedAt;
     document.getElementById("upSince").textContent = sinceDate
@@ -261,7 +270,7 @@ async function openUserProfile(userId) {
       : "—";
 
     document.getElementById("upFollowers").textContent = data.followersCount;
-    document.getElementById("upBio").innerHTML = data.bio ? escapeHtml(data.bio) : "<i>No bio yet</i>";
+    document.getElementById("upBio").textContent = data.bio || "No bio yet";
 
     const followBtn = document.getElementById("upFollowBtn");
     const messageBtn = document.getElementById("upMessageBtn");
@@ -270,9 +279,10 @@ async function openUserProfile(userId) {
       followBtn.style.display = "none";
       messageBtn.style.display = "none";
     } else {
-      followBtn.style.display = "flex";
+      followBtn.style.display = "block";
       messageBtn.style.display = "flex";
-      followBtn.textContent = data.isFollowedByMe ? "Following" : "Follow";
+      followBtn.innerHTML = data.isFollowedByMe ? "Following" : "<i class='bx bx-plus'></i> Follow";
+      followBtn.classList.toggle("up-following", data.isFollowedByMe);
       followBtn.onclick = () => toggleFollowUser(userId, followBtn);
       messageBtn.onclick = () => (window.location.href = `chat.html?to=${userId}`);
     }
@@ -290,8 +300,9 @@ async function toggleFollowUser(userId, btn) {
   try {
     const res = await fetch(`${API_BASE_URL}/api/users/${userId}/follow`, { method: "POST", headers });
     const data = await res.json();
-    btn.textContent = data.following ? "Following" : "Follow";
-    document.getElementById("upFollowers").textContent = `${data.followersCount} follower${data.followersCount === 1 ? "" : "s"}`;
+    btn.innerHTML = data.following ? "Following" : "<i class='bx bx-plus'></i> Follow";
+    btn.classList.toggle("up-following", data.following);
+    document.getElementById("upFollowers").textContent = data.followersCount;
   } catch (err) {
     alert("Could not reach the server.");
   }

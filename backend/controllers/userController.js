@@ -10,6 +10,9 @@ exports.getPublicProfile = async (req, res) => {
     const followersCount = await Follow.countDocuments({ following: targetId });
     const isFollowedByMe = !!(await Follow.findOne({ follower: req.userId, following: targetId }));
 
+    const isPremium = !!(user.premiumExpiresAt && new Date(user.premiumExpiresAt) > new Date());
+    const daysSinceJoined = Math.floor((Date.now() - new Date(user.createdAt).getTime()) / (1000 * 60 * 60 * 24));
+
     res.status(200).json({
       id: user._id,
       firstName: user.firstName,
@@ -22,6 +25,8 @@ exports.getPublicProfile = async (req, res) => {
       followersCount,
       isFollowedByMe,
       isMe: targetId === req.userId,
+      isPremium,
+      isNew: daysSinceJoined <= 7,
     });
   } catch (err) {
     console.error("getPublicProfile error:", err);

@@ -57,28 +57,49 @@
       </div>
     </div>
 
-    <!-- Public profile view -->
+ <!-- Public profile view -->
     <div id="userProfileOverlay" class="profile-overlay"></div>
     <div id="userProfilePanel" class="user-profile-modal">
+      <span id="upNewBadge" class="up-new-badge" style="display:none;"><i class='bx bxs-star'></i> New</span>
       <button id="userProfileCloseBtn" class="profile-close-btn"><i class='bx bx-x'></i></button>
+
       <div class="user-profile-content">
-        <div class="avatar-wrap" style="margin:0 auto 15px auto;">
-          <img id="upAvatar" class="avatar-preview" style="display:none;">
-          <div id="upAvatarPlaceholder" class="avatar-placeholder"><i class='bx bxs-user-circle'></i></div>
-        </div>
-        <p class="up-name" id="upName"></p>
-
-        <div class="up-info-list">
-          <p class="up-info-row"><span>Paired with</span><b id="upPaired">—</b></p>
-          <p class="up-info-row"><span>Together since</span><b id="upSince">—</b></p>
-          <p class="up-info-row"><span>Followers</span><b id="upFollowers">0</b></p>
+        <div class="up-avatar-wrap">
+          <img id="upAvatar" class="up-avatar-big" style="display:none;">
+          <div id="upAvatarPlaceholder" class="up-avatar-big up-avatar-placeholder-big"><i class='bx bxs-user-circle'></i></div>
         </div>
 
-        <p class="up-bio" id="upBio"></p>
+        <p class="up-name-big">
+          <span id="upName"></span>
+          <i id="upVerifiedBadge" class='bx bxs-check-circle up-verified-badge' style="display:none;" title="Premium member"></i>
+        </p>
+        <p class="up-handle" id="upHandle"></p>
 
-        <div class="user-profile-actions">
-          <button id="upFollowBtn" class="huge-btn primary panel-submit-btn">Follow</button>
-          <button id="upMessageBtn" class="huge-btn primary panel-submit-btn">Message</button>
+        <div id="upPairedPill" class="up-paired-pill" style="display:none;">
+          <i class='bx bxs-heart'></i> Paired with <b id="upPartnerNamePill"></b>
+        </div>
+
+        <div class="up-stats-grid">
+          <div class="up-stat-box">
+            <i class='bx bxs-calendar-heart'></i>
+            <p class="up-stat-label">Together since</p>
+            <p class="up-stat-value" id="upSince">—</p>
+          </div>
+          <div class="up-stat-box">
+            <i class='bx bxs-group'></i>
+            <p class="up-stat-label">Followers</p>
+            <p class="up-stat-value" id="upFollowers">0</p>
+          </div>
+          <div class="up-stat-box">
+            <i class='bx bxs-magic-wand'></i>
+            <p class="up-stat-label">About me</p>
+            <p class="up-stat-value up-stat-bio" id="upBio">—</p>
+          </div>
+        </div>
+
+        <div class="user-profile-actions-stacked">
+          <button id="upFollowBtn" class="up-follow-btn">Follow</button>
+          <button id="upMessageBtn" class="up-message-btn"><i class='bx bx-message-rounded'></i> Message</button>
         </div>
       </div>
     </div>
