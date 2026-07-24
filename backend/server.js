@@ -55,6 +55,7 @@ app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 // ---------- Real-time chat (Socket.io) ----------
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
+const onlineUsers = new Set(); // userIds currently connected via socket
 
 // Require a valid JWT before letting a socket connect
 io.use((socket, next) => {
@@ -80,14 +81,28 @@ io.on("connection", async (socket) => {
   } catch (err) {
     console.error("socket connection error:", err);
   }
-
 io.on("connection", (socket) => {
+  onlineUsers.add(socket.userId);
+  io.emit("presence_update", { userId: socket.userId, online: true });
+
+  socket.on("disconnect", () => {
+    // Only mark fully offline if this was their last connected tab/device
+    const stillConnected = [...io.sockets.sockets.values()].some(
+      (s) => s.userId === socket.userId && s.id !== socket.id
+    );
+    if (!stillConnected) {
+      onlineUsers.delete(socket.userId);
+      io.emit("presence_update", { userId: socket.userId, online: false });
+    }
+  });
+
   socket.on("join_conversation", ({ userId }) => {
     if (!userId) return;
     const roomId = getRoomId(socket.userId, userId);
     socket.currentRoomId = roomId;
     socket.currentPartnerId = userId;
     socket.join(roomId);
+    socket.emit("presence_status", { userId, online: onlineUsers.has(userId) });
   });
 
   socket.on("send_message", async (data) => {
@@ -112,6 +127,11 @@ io.on("connection", (socket) => {
     } catch (err) {
       console.error("send_message error:", err);
     }
+  });
+
+  socket.on("message_seen", () => {
+    if (!socket.currentRoomId) return;
+    io.to(socket.currentRoomId).emit("messages_seen", { by: socket.userId });
   });
 });
 });
