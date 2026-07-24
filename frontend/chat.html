@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -8,7 +9,6 @@
     <link rel="apple-touch-icon" href="favicon-180.png">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#e6437e">
-    <meta charset="UTF-8" />
     <title>Chat</title>
     <script src="theme.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -25,23 +25,34 @@
       </div>
 
       <div id="chatSection" style="display:none;">
-        <a href="messages.html" class="back-link"><i class='bx bx-arrow-back'></i> Messages</a>
-        <p class="title" id="chatPartnerName">Chat</p>
-        <p class="subtitle"><i class='bx bx-lock-alt'></i> Messages are encrypted</p>
+        <div class="chat-header-card">
+          <a href="messages.html" class="chat-back-btn"><i class='bx bx-arrow-left'></i></a>
+          <div class="chat-header-center">
+            <div class="chat-header-avatar-wrap">
+              <img id="chatPartnerAvatar" class="chat-header-avatar" style="display:none;">
+              <div id="chatPartnerAvatarPlaceholder" class="chat-header-avatar chat-header-avatar-placeholder"><i class='bx bxs-user-circle'></i></div>
+              <span id="chatOnlineDot" class="chat-online-dot" style="display:none;"></span>
+            </div>
+            <p class="chat-header-name" id="chatPartnerName">Chat</p>
+            <p class="chat-header-status" id="chatStatusText"></p>
+          </div>
+          <div class="chat-header-spacer"></div>
+        </div>
+        <p class="chat-encrypted-note"><i class='bx bx-lock-alt'></i> Messages are end-to-end encrypted</p>
 
         <div id="messagesList" class="messages-list"></div>
 
-        <form id="messageForm" class="message-form">
-          <input type="text" id="messageInput" class="message-input" placeholder="Type a message..." autocomplete="off">
-          <button type="submit" class="message-send-btn"><i class='bx bx-send'></i></button>
+        <form id="messageForm" class="chat-input-bar">
+          <span class="chat-input-icon"><i class='bx bx-smile'></i></span>
+          <input type="text" id="messageInput" class="chat-input-field" placeholder="Type a message..." autocomplete="off">
+          <span class="chat-input-icon"><i class='bx bx-paperclip'></i></span>
+          <button type="submit" class="chat-input-send"><i class='bx bx-send'></i></button>
         </form>
       </div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script src="theme.js"></script>
     <script src="decor.js"></script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="profile.js"></script>
     <script src="chat.js"></script>
   </body>
